@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Services Platform</title>
+    <style>
+        :root {
+            --royal-blue: #0A2351;
+            --ivory: #FFFFF0;
+            --light-ivory: #FFFFFA;
+            --hover-blue: #153672;
+            --sidebar-dark: #1f2125;
+            --cyan: rgb(21, 235, 235);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-ivory);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #132440;
+            color: var(--ivory);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+            color: var(--cyan);
+        }
+
+        .menu-item {
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-item:hover {
+            background-color: rgb(74, 73, 73);
+        }
+
+        .menu-item svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .menu-item.has-submenu {
+            position: relative;
+        }
+
+        .menu-item.has-submenu::after {
+            content: '▼';
+            position: absolute;
+            right: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .menu-item.has-submenu.active::after {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            margin-left: 2.5rem;
+            height: 0;
+            overflow: hidden;
+            transition: height 0.3s ease;
+        }
+
+        .submenu.active {
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .submenu .menu-item {
+            padding: 0.6rem 1rem;
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            flex-grow: 1;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--royal-blue);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        .logo-container {
+    margin-bottom: 1.5rem;  /* Reduced from 3rem */
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--cyan);
+    margin-bottom: 0.5rem;  /* Reduced from 0.75rem */
+}
+
+.logo-separator {
+    width: 100%;
+    height: 2px;
+    background-color: rgb(229, 241, 241);
+    margin-top: 5px;
+    margin-bottom: 15px;    /* Adjusted spacing here */
+    box-shadow: 0 0 8px rgb(229, 241, 241);
+}
+
+        .logo-subtitle {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            font-style: italic;
+            padding-left: 2px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <!-- SVG Definitions -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="icon-home" viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 22V12h6v10" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        <symbol id="icon-command" viewBox="0 0 24 24">
+            <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        <symbol id="icon-operations" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        <symbol id="icon-projects" viewBox="0 0 24 24">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        <symbol id="icon-config" viewBox="0 0 24 24">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        <symbol id="icon-graice" viewBox="0 0 24 24">
+            <path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="5" cy="19" r="2" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        <symbol id="icon-settings" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+    </svg>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo">Transaction Services Hub</div>
+            <div class="logo-separator"></div>
+           
+        </div>
+            <div class="menu-item">
+                <svg><use href="#icon-home"/></svg>
+                Home
+            </div>
+            <div class="menu-item">
+                <svg><use href="#icon-command"/></svg>
+                Command Center
+            </div>
+            <div class="menu-item has-submenu">
+                <svg><use href="#icon-operations"/></svg>
+                Transaction Operations
+            </div>
+            <div class="submenu">
+                <div class="menu-item">Transaction Activity</div>
+                <div class="menu-item">Transaction Engineering</div>
+                <div class="menu-item">Transaction Analytics</div>
+                <div class="menu-item">Transaction Families</div>
+            </div>
+            <div class="menu-item">
+                <svg><use href="#icon-projects"/></svg>
+                My Projects
+            </div>
+            <div class="menu-item">
+                <svg><use href="#icon-config"/></svg>
+                Configuration
+            </div>
+            <div class="menu-item">
+                <svg><use href="#icon-settings"/></svg>
+                Settings
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content" id="main-content">
+        <!-- Content will be dynamically loaded here -->
+    </div>
+
+    <!-- Transaction Engineering Modal -->
+    <div class="modal" id="engineering-modal">
+        <div class="modal-content">
+            <h2>Select Transaction Program</h2>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="program" value="orders">
+                    Orders
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="program" value="saas">
+                    SaaS Agreements
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="program" value="service">
+                    Service Agreements
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="program" value="hardware">
+                    Hardware Purchase Agreements
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="program" value="software">
+                    Software License Agreements
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="program" value="network">
+                    Network Agreements
+                </label>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="launchProgram()">Launch</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dropdown functionality
+        document.querySelectorAll('.menu-item.has-submenu').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const submenu = this.nextElementSibling;
+                submenu.classList.toggle('active');
+            });
+        });
+
+        // Modal functionality
+        function showModal() {
+            document.getElementById('engineering-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('engineering-modal').classList.remove('active');
+        }
+
+        function launchProgram() {
+            const selectedProgram = document.querySelector('input[name="program"]:checked')?.value;
+            if (selectedProgram) {
+                closeModal();
+                // Here you would load the appropriate program content
+                const mainContent = document.getElementById('main-content');
+                mainContent.innerHTML = `<h1>${selectedProgram.charAt(0).toUpperCase() + selectedProgram.slice(1)} Program</h1>`;
+                // Add your program-specific content here
+            }
+        }
+
+        // Event listener for Transaction Engineering menu item
+        document.querySelectorAll('.submenu .menu-item').forEach(item => {
+            if (item.textContent === 'Transaction Engineering') {
+                item.addEventListener('click', showModal);
+            }
+        });
+    </script>
+</body>
+</html>
