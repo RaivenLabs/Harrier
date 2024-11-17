@@ -1,0 +1,133 @@
+
+        <!-- Agreement Modal -->
+        <div id="agreementModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeAgreementModal()">&times;</span>
+                <h2>Add New Agreement</h2>
+                <form id="agreementForm" onsubmit="handleFormSubmit(event)">
+                    <div class="form-grid">
+                        <!-- [Form fields remain unchanged] -->
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="btn btn-primary">Save Agreement</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeAgreementModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+     <!-- Engineering Program Modal -->
+<div id="engineering-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeEngineeringModal()">&times;</span>
+        <h2>Select Transaction Program</h2>
+        <div class="radio-group">
+            <label class="radio-option">
+                <input type="radio" name="program" value="orders">
+                Orders
+            </label>
+            <label class="radio-option">
+                <input type="radio" name="program" value="saas">
+                SaaS Agreements
+            </label>
+            <label class="radio-option">
+                <input type="radio" name="program" value="service">
+                Service Agreements
+            </label>
+            <label class="radio-option">
+                <input type="radio" name="program" value="hardware">
+                Hardware Purchase Agreements
+            </label>
+            <label class="radio-option">
+                <input type="radio" name="program" value="software">
+                Software License Agreements
+            </label>
+            <label class="radio-option">
+                <input type="radio" name="program" value="network">
+                Network Agreements
+            </label>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="closeEngineeringModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="launchProgram()">Launch</button>
+        </div>
+    </div>
+</div>
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+
+    <!-- Import Data Modal -->
+<div id="import-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeImportModal()">&times;</span>
+        <h2>Import Transaction Data</h2>
+        <div class="import-form">
+            <div class="form-group">
+                <label for="fileInput">Select JSON File</label>
+                <input type="file" 
+                       id="fileInput" 
+                       accept=".json" 
+                       class="form-control"
+                       onchange="handleFileSelect(event)">
+            </div>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+
+        <!-- Dashboard Container -->
+<div  id="transactionDashboard" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeImportModal()">&times;</span>
+
+
+            <div class="dashboard-panel">
+                <div class="panel-title">
+                    Transaction Dashboard
+                </div>
+                
+                <div class="panel-content">
+                    <!-- Table Container -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Agreement ID</th>
+                                    <th>Title</th>
+                                    <th>Counterparty</th>
+                                    <th>Category</th>
+                                    <th>Role</th>
+                                    <th>Effective Date</th>
+                                    <th>End Date</th>
+                                    <th>Region</th>
+                                    <th>Status</th>
+                                    <th>CLM Reference</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="agreementTableBody">
+                                <!-- Table content will be populated by backend -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="dashboard-actions">
+                    <button class="btn btn-primary import-button" onclick="openImportModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Import Transaction Data
+                    </button>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
+                </div>
