@@ -11,6 +11,10 @@
     --light-ivory: #FFFFFA;
     --hover-blue: #153672;
     --sidebar-dark: #1f2125;
+    --light-gray: #F5F5F5;
+    --dark-gray: #333333;
+    --teal: #006D77;
+    --light-blue: rgba(10, 35, 81, 0.1);
     --cyan: rgb(21, 235, 235);
 }
 
@@ -26,6 +30,8 @@ body {
     display: flex;
     width: 100%;
     min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
 }
 
 /* Layout Styles */
@@ -439,6 +445,692 @@ body {
     margin-bottom: 1rem;
     font-size: 0.9rem;
 }
+/* Add max-height to modal content with smooth scrolling */
+.engineering-console .modal-content {
+    background-color: var(--ivory);
+    padding: 2rem;
+    max-width: 1200px;
+    max-height: 85vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--royal-blue) var(--ivory);
+}
+
+.engineering-console h2 {
+    color: var(--royal-blue);
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--royal-blue);
+}
+
+.engineering-console .program-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+
+
+.engineering-console .program-group:hover {
+    background-color: rgba(19, 36, 64, 0.05);
+    box-shadow: 0 4px 12px rgba(19, 36, 64, 0.08);
+}
+
+.engineering-console .group-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(19, 36, 64, 0.1);
+}
+
+.engineering-console .group-header svg {
+    color: var(--royal-blue);
+}
+
+.engineering-console .group-header h3 {
+    color: var(--royal-blue);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Updated styles for compact tiles */
+.engineering-console .program-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Reduced from 180px to 100px */
+    gap: 0.75rem;
+    padding: 0.5rem;
+}
+
+.engineering-console .program-tile {
+    position: relative;
+    cursor: pointer;
+}
+
+.engineering-console .program-tile input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.engineering-console .tile-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    height: 100px; /* Fixed height for square-ish tiles */
+    width: 100px; /* Fixed width */
+    background-color: var(--light-ivory);
+    border: 1px solid rgba(19, 36, 64, 0.15);
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.engineering-console .program-tile:hover .tile-content {
+    background-color: white;
+    border-color: var(--royal-blue);
+    transform: translateY(-2px);
+}
+
+.engineering-console .program-tile input[type="radio"]:checked + .tile-content {
+    background-color: white;
+    border-color: var(--royal-blue);
+    box-shadow: 0 2px 8px rgba(19, 36, 64, 0.15);
+}
+
+.engineering-console .tile-content svg {
+    color: var(--royal-blue);
+    width: 24px;
+    height: 24px;
+}
+
+.engineering-console .tile-content span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--royal-blue);
+    line-height: 1.2;
+    /* Ensure text doesn't overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.engineering-console .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(19, 36, 64, 0.1);
+}
+
+.engineering-console .btn-primary {
+    background-color: var(--royal-blue);
+    color: white;
+}
+
+.engineering-console .btn-primary:hover {
+    background-color: var(--hover-blue);
+}
+
+.engineering-console .btn-secondary {
+    background-color: var(--light-ivory);
+    color: var(--royal-blue);
+    border: 1px solid var(--royal-blue);
+}
+
+.engineering-console .btn-secondary:hover {
+    background-color: var(--ivory);
+}
+
+* Hover and selected states */
+.engineering-console .program-tile:hover .tile-content {
+    background-color: white;
+    border-color: var(--royal-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(19, 36, 64, 0.1);
+}
+.engineering-console .program-tile input[type="radio"]:checked + .tile-content {
+    background-color: rgba(19, 36, 64, 0.05);
+    border-color: var(--royal-blue);
+    box-shadow: 0 2px 8px rgba(19, 36, 64, 0.15);
+}
+
+.engineering-console .program-group {
+    background-color: rgba(19, 36, 64, 0.03);
+    border: 1px solid rgba(19, 36, 64, 0.1);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s ease;
+}
+
+
+.engineering-console .group-header {
+    margin-bottom: 1rem;
+}
+
+/* Add hover state for the entire group */
+.engineering-console .program-group:hover {
+    box-shadow: 0 2px 8px rgba(19, 36, 64, 0.08);
+}
+
+/* Add focus states for accessibility */
+.engineering-console .program-tile input[type="radio"]:focus + .tile-content {
+    outline: 2px solid var(--royal-blue);
+    outline-offset: 2px;
+}
+
+/* Scrollbar styling for webkit browsers */
+.engineering-console .modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.engineering-console .modal-content::-webkit-scrollbar-track {
+    background: var(--ivory);
+}
+
+.engineering-console .modal-content::-webkit-scrollbar-thumb {
+    background-color: var(--royal-blue);
+    border-radius: 4px;
+    border: 2px solid var(--ivory);
+}
+
+ .tour-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .tour-header {
+            background-color: var(--corporate-blue);
+            color: var(--ivory);
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        .tour-header h1 {
+            font-size: 2.8rem;
+            margin: 0 auto 1rem;
+            font-weight: 600;
+        }
+
+        .tour-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .principle-section {
+            background: white;
+            padding: 4rem 1rem;
+        }
+
+        .principle-title {
+            text-align: center;
+            color: var(--corporate-blue);
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .principle-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .principle-box {
+            background: var(--light-gray);
+            padding: 2rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .arrow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
+            height: 100px;
+        }
+
+        .arrow-right {
+            position: relative;
+            width: 2in; /* Set to 2 inches */
+            height: 15px; /* Set thickness to 15px */
+            background-color: var(--teal);
+        }
+
+        .arrow-right::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: -12.5px;
+            width: 0;
+            height: 0;
+            border-left: 25px solid var(--teal);
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+        }
+
+        .arrow-text {
+            font-size: 1rem;
+            color: var(--teal);
+            font-weight: 500;
+            margin-top: 1.5rem;
+        }
+
+        .outcome-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .outcome-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        .outcome-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--teal);
+            font-size: 1.2rem;
+        }
+
+        .lifecycle-section {
+            background: var(--ivory);
+            padding: 4rem 1rem;
+        }
+
+        .lifecycle-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Creates exactly 7 equal columns */
+    gap: 1rem;
+    text-align: center;
+    overflow-x: auto; /* Allows horizontal scrolling if needed */
+    padding-bottom: 1rem; /* Space for potential scrollbar */
+}
+
+        .lifecycle-card {
+            background: white;
+            border: 1px solid var(--light-blue);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 150px;
+            transition: transform 0.3s ease;
+        }
+
+        .lifecycle-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .lifecycle-card h3 {
+            color: var(--corporate-blue);
+            font-size: 1.2rem;
+            margin-bottom: .5rem;
+        }
+        .lifecycle-card p {
+    font-size: 0.9rem; /* Slightly smaller font */
+    margin: 0;
+}
+
+        .tour-footer {
+            background: var(--corporate-blue);
+            color: var(--ivory);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .tour-footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .principle-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .arrow-container {
+                transform: rotate(90deg);
+                margin: 2rem 0;
+            }
+
+            .arrow-text {
+                transform: rotate(-90deg);
+                margin-top: 1rem;
+            }
+
+            .arrow-right {
+                width: 1.5in; /* Slightly shorter on mobile */
+            }
+        }
+        .finder-section {
+    background: var(--light-gray);
+    padding: 4rem 1rem;
+    margin-top: 3rem;
+}
+
+.finder-title {
+    text-align: center;
+    color: var(--corporate-blue);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.finder-table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.finder-table th,
+.finder-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--light-blue);
+    line-height: 1.4;
+}
+
+.finder-table th {
+    background: var(--corporate-blue);
+    color: var(--ivory);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.finder-table tr:last-child td {
+    border-bottom: none;
+}
+
+.finder-table tr:hover {
+    background: var(--light-blue);
+}
+
+/* Add responsive handling for smaller screens */
+@media (max-width: 768px) {
+    .finder-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .finder-table th,
+    .finder-table td {
+        white-space: nowrap;
+    }
+}
+.tour-wrapper {
+            --tour-corporate-blue: #0A2351;
+            --tour-ivory: #FFFFF0;
+            --tour-light-gray: #F5F5F5;
+            --tour-dark-gray: #333333;
+            --tour-teal: #006D77;
+            --tour-light-blue: rgba(10, 35, 81, 0.1);
+        }
+        
+        .tour-wrapper {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--tour-ivory);
+            color: var(--tour-dark-gray);
+            line-height: 1.6;
+        }
+
+        .tour-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .tour-header {
+            background-color: var(--tour-corporate-blue);
+            color: var(--tour-ivory);
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        .tour-header h1 {
+            font-size: 2.8rem;
+            margin: 0 auto 1rem;
+            font-weight: 600;
+        }
+
+        .tour-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tour-principle-section {
+            background: white;
+            padding: 4rem 1rem;
+        }
+
+        .tour-principle-title {
+            text-align: center;
+            color: var(--tour-corporate-blue);
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tour-principle-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tour-principle-box {
+            background: var(--tour-light-gray);
+            padding: 2rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .tour-arrow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
+            height: 100px;
+        }
+
+        .tour-arrow-right {
+            position: relative;
+            width: 2in;
+            height: 15px;
+            background-color: var(--tour-teal);
+        }
+
+        .tour-arrow-right::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: -12.5px;
+            width: 0;
+            height: 0;
+            border-left: 25px solid var(--tour-teal);
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+        }
+
+        .tour-arrow-text {
+            font-size: 1rem;
+            color: var(--tour-teal);
+            font-weight: 500;
+            margin-top: 1.5rem;
+        }
+
+        .tour-outcome-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tour-outcome-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        .tour-outcome-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--tour-teal);
+            font-size: 1.2rem;
+        }
+
+        .tour-lifecycle-section {
+            background: var(--tour-ivory);
+            padding: 4rem 1rem;
+        }
+
+        .tour-lifecycle-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+            text-align: center;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .tour-lifecycle-card {
+            background: white;
+            border: 1px solid var(--tour-light-blue);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 150px;
+            transition: transform 0.3s ease;
+        }
+
+        .tour-lifecycle-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tour-lifecycle-card h3 {
+            color: var(--tour-corporate-blue);
+            font-size: 1.2rem;
+            margin-bottom: .5rem;
+        }
+
+        .tour-lifecycle-card p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .tour-finder-section {
+            background: var(--tour-light-gray);
+            padding: 4rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .tour-finder-title {
+            text-align: center;
+            color: var(--tour-corporate-blue);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .tour-finder-table {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tour-finder-table th,
+        .tour-finder-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--tour-light-blue);
+            line-height: 1.4;
+        }
+
+        .tour-finder-table th {
+            background: var(--tour-corporate-blue);
+            color: var(--tour-ivory);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .tour-finder-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tour-finder-table tr:hover {
+            background: var(--tour-light-blue);
+        }
+
+        .tour-footer {
+            background: var(--tour-corporate-blue);
+            color: var(--tour-ivory);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .tour-principle-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tour-arrow-container {
+                transform: rotate(90deg);
+                margin: 2rem 0;
+            }
+
+            .tour-arrow-text {
+                transform: rotate(-90deg);
+                margin-top: 1rem;
+            }
+
+            .tour-arrow-right {
+                width: 1.5in;
+            }
+
+            .tour-finder-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .tour-finder-table th,
+            .tour-finder-table td {
+                white-space: nowrap;
+            }
+        }
+
+
+
  
 
 
@@ -468,6 +1160,40 @@ body {
         <symbol id="icon-config" viewBox="0 0 24 24">
             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" fill="none" stroke="currentColor" stroke-width="2"/>
         </symbol>
+
+        <symbol id="icon-concierge" viewBox="0 0 24 24">
+            <!-- White Glove -->
+            <path d="M6 15c0-3 2.5-5.5 6-5.5s6 2.5 6 5.5V19c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-4z" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <!-- Wrist/Cuff Detail -->
+            <path d="M6 15h12" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <!-- Thumb -->
+            <path d="M8 14v-2c0-1.1.9-2 2-2h0" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <!-- Fingertips -->
+            <path d="M10 9.5v-2M12 9v-2.5M14 9.5v-2M16 10.5v-1.5" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <!-- Optional: Bell on top -->
+            <path d="M12 7.5V5M10.5 5h3" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <circle cx="12" cy="4" r="1" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    stroke-width="2"/>
+        </symbol>
         
         <symbol id="icon-settings" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -479,17 +1205,17 @@ body {
             <!-- Sidebar Navigation -->
             <div class="sidebar" id="sidebar">
                 <div class="logo-container">
-                    <div class="logo">Transaction Services Hub</div>
+                    <div class="logo">Transaction Services Platform</div>
                     <div class="logo-separator"></div>
                 </div>
                 <nav>
-                    <div class="menu-item" data-section="home">
+                    <div class="menu-item" data-section="platformtour">
                         <svg><use href="#icon-home"/></svg>
-                        Home
+                        Platform Tour
                     </div>
-                    <div class="menu-item" data-section="command">
+                    <div class="menu-item" data-section="operationscommand">
                         <svg><use href="#icon-command"/></svg>
-                        Command Center
+                        Transaction Operations Command
                     </div>
                     <div class="menu-item has-submenu" data-section="operations">
                         <svg><use href="#icon-operations"/></svg>
@@ -500,16 +1226,24 @@ body {
                         <div class="menu-item" data-section="engineering">Transaction Engineering</div>
                         <div class="menu-item" data-section="analytics">Transaction Analytics</div>
                         <div class="menu-item" data-section="families">Transaction Families</div>
-                        <div class="menu-item" data-section="configuration">Configuration</div>
+                        <div class="menu-item" data-section="configuration">Transaction Configuration</div>
                     </div>
                     <div class="menu-item" data-section="projects">
                         <svg><use href="#icon-projects"/></svg>
                         My Projects
                     </div>
+
+                    <div class="menu-item" data-section="concierge">
+                        <svg><use href="#icon-concierge"/></svg>
+                        Concierge
+                    </div>
+
                     <div class="menu-item" data-section="settings">
                         <svg><use href="#icon-settings"/></svg>
                         Settings
                     </div>
+
+
                     <br><br><br>
                     <div>
                         <p>Powered by Tangible Intelligence</p>
@@ -524,69 +1258,387 @@ body {
         </div>
 
 
-        <!-- Agreement Modal -->
-        <div id="agreementModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeAgreementModal()">&times;</span>
-                <h2>Add New Agreement</h2>
-                <form id="agreementForm" onsubmit="handleFormSubmit(event)">
-                    <div class="form-grid">
-                        <!-- [Form fields remain unchanged] -->
-                    </div>
-                    <div class="button-container">
-                        <button type="submit" class="btn btn-primary">Save Agreement</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeAgreementModal()">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                        <path d="M9 9h6v6H9z"/>
+                                    </svg>
+                                    <span>Hardware</span>
+                                </div>
+                            </label>
+        
+                            <label class="program-tile">
+                                <input type="radio" name="program" value="network">
+                                <div class="tile-content">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 2h6v3h-6zM5 5h14v4H5zM3 9h18v4H3zM5 13h14v4H5zM9 17h6v3h-6z"/>
+                                    </svg>
+                                    <span>Network</span>
+                                </div>
+                            </label>
+        
+                            <label class="program-tile">
+                                <input type="radio" name="program" value="evaluation">
+                                <div class="tile-content">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <path d="M9 10h6M9 14h6M9 18h6"/>
+                                    </svg>
+                                    <span>Evaluation</span>
+                                </div>
+                            </label>
+                            <div id="engineeringConsole" class="modal engineering-console">
+                                <div class="modal-content">
+                                    <span class="close-button" onclick="modalManager.close('engineeringConsole')">&times;</span>
+                                    <h2>Transaction Programs</h2>
+                                    
+                                    <div class="program-groups">
+                                        <!-- Sourcing Transactions -->
+                                        <div class="program-group">
+                                            <div class="group-header">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M20 7h-7m7 10h-7M7 7h-2M7 17h-2M8 5v4M8 15v4M14 5v4m0 6v4"/>
+                                                </svg>
+                                                <h3>Sourcing Transactions</h3>
+                                            </div>
+                                            <div class="program-grid">
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="purchase-orders">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M9 17h6M9 12h6M9 7h6"/>
+                                                        </svg>
+                                                        <span>Purchase Orders</span>
+                                                    </div>
+                                                </label>
+                                                                                                
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="saas">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 1 1 2.5 8.242"/>
+                                                        </svg>
+                                                        <span>SaaS</span>
+                                                    </div>
+                                                </label>
 
-     <!-- Engineering Program Modal -->
-<div id="engineering-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeEngineeringModal()">&times;</span>
-        <h2>Select Transaction Program</h2>
-        <div class="radio-group">
-            <label class="radio-option">
-                <input type="radio" name="program" value="orders">
-                Orders
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="saas">
-                SaaS Agreements
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="service">
-                Service Agreements
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="hardware">
-                Hardware Purchase Agreements
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="software">
-                Software License Agreements
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="network">
-                Network Agreements
-            </label>
-        </div>
-        <div class="modal-buttons">
-            <button class="btn btn-secondary" onclick="closeEngineeringModal()">Cancel</button>
-            <button class="btn btn-primary" onclick="launchProgram()">Launch</button>
-        </div>
-    </div>
-</div>
-        <!-- Toast Notification -->
-        <div id="toast" class="toast"></div>
-    </div>
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="msa">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                                            <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+                                                        </svg>
+                                                        <span>MSA</span>
+                                                    </div>
+                                                </label>
 
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="nda">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M12 17v-2M9 9h6M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z"/>
+                                                        </svg>
+                                                        <span>NDA</span>
+                                                    </div>
+                                                </label>
+
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="consulting">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                                            <circle cx="9" cy="7" r="4"/>
+                                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                                        </svg>
+                                                        <span>Consulting</span>
+                                                    </div>
+                                                </label>
+
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="hardware">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                                            <path d="M9 9h6v6H9z"/>
+                                                        </svg>
+                                                        <span>Hardware</span>
+                                                    </div>
+                                                </label>
+
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="network">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M9 2h6v3h-6zM5 5h14v4H5zM3 9h18v4H3zM5 13h14v4H5zM9 17h6v3h-6z"/>
+                                                        </svg>
+                                                        <span>Network</span>
+                                                    </div>
+                                                </label>
+
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="evaluation">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                                            <path d="M9 10h6M9 14h6M9 18h6"/>
+                                                        </svg>
+                                                        <span>Evaluation</span>
+                                                    </div>
+                                                </label>
+
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="software">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>
+                                                        </svg>
+                                                        <span>Software</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Real Estate Transactions -->
+                                        <div class="program-group">
+                                            <div class="group-header">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                                    <polyline points="9 22 9 12 15 12 15 22"/>
+                                                </svg>
+                                                <h3>Real Estate Transactions</h3>
+                                            </div>
+                                            <div class="program-grid">
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="retail-lease">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M3 3h18v18H3z"/>
+                                                            <path d="M3 9h18"/>
+                                                            <path d="M15 3v18"/>
+                                                        </svg>
+                                                        <span>Retail Lease</span>
+                                                    </div>
+                                                </label>
+                                                
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="commercial-lease">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                                            <path d="M4 9h16"/>
+                                                            <path d="M12 4v16"/>
+                                                        </svg>
+                                                        <span>Commercial Lease</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="property-purchase">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                                            <path d="M2 17l10 5 10-5"/>
+                                                            <path d="M2 12l10 5 10-5"/>
+                                                        </svg>
+                                                        <span>Property Purchase</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Corporate Finance -->
+                                        <div class="program-group">
+                                            <div class="group-header">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                                </svg>
+                                                <h3>Corporate Finance</h3>
+                                            </div>
+                                            <div class="program-grid">
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="venture-capital">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M2 16l4-4 4 4 4-4 4 4 4-4"/>
+                                                        </svg>
+                                                        <span>Venture Capital</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="equity-investment">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10"/>
+                                                            <path d="M12 2v20M2 12h20"/>
+                                                        </svg>
+                                                        <span>Equity Investment</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="debt-financing">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M8 6h12M4 6h2M8 12h12M4 12h2M8 18h12M4 18h2"/>
+                                                        </svg>
+                                                        <span>Debt Financing</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- M&A Transactions -->
+                                        <div class="program-group">
+                                            <div class="group-header">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M16 3h5v5M21 3l-7 7M3 21h5v-5M3 21l7-7"/>
+                                                </svg>
+                                                <h3>M&A Transactions</h3>
+                                            </div>
+                                            <div class="program-grid">
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="stock-purchase">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M6 2h12v6H6zM6 16h12v6H6z"/>
+                                                            <path d="M12 8v8"/>
+                                                        </svg>
+                                                        <span>Stock Purchase</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="asset-purchase">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10"/>
+                                                            <path d="M12 6v12M6 12h12"/>
+                                                        </svg>
+                                                        <span>Asset Purchase</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="merger">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M8 2h8M12 2v20M2 12h20"/>
+                                                        </svg>
+                                                        <span>Merger</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- HR & Employment -->
+                                        <div class="program-group">
+                                            <div class="group-header">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                                    <circle cx="9" cy="7" r="4"/>
+                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                                </svg>
+                                                <h3>HR & Employment</h3>
+                                            </div>
+                                            <div class="program-grid">
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="employment">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                                            <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+                                                        </svg>
+                                                        <span>Employment</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="stock-options">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M2 16l4-4 4 4 4-4 4 4 4-4"/>
+                                                        </svg>
+                                                        <span>Stock Options</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="benefits">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <span>Benefits</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- IP & Technology -->
+                                        <div class="program-group">
+                                            <div class="group-header">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M12 2l10 6v8l-10 6-10-6V8l10-6z"/>
+                                                </svg>
+                                                <h3>IP & Technology</h3>
+                                            </div>
+                                            <div class="program-grid">
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="patent-license">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10"/>
+                                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                                        </svg>
+                                                        <span>Patent License</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="trademark-license">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10"/>
+                                                            <path d="M8 11h8"/>
+                                                            <path d="M12 15V8"/>
+                                                        </svg>
+                                                        <span>Trademark License</span>
+                                                    </div>
+                                                </label>
+                            
+                                                <label class="program-tile">
+                                                    <input type="radio" name="program" value="tech-transfer">
+                                                    <div class="tile-content">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M21 12h-4l-3 9L9 3l-3 9H2"/>
+                                                        </svg>
+                                                        <span>Tech Transfer</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                            
+                                    </div>
+                                    
+                                    <div class="modal-buttons">
+                                        <button class="btn btn-secondary" onclick="modalManager.close('engineeringConsole')">Cancel</button>
+                                        <button class="btn btn-primary" onclick="launchProgram()">Launch Program</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
 
 <!-- Import Data Modal -->
-<div id="import-modal" class="modal">
+<div id="importModal" class="modal"> 
     <div class="modal-content">
-        <span class="close-button" onclick="closeImportModal()">&times;</span>
+        <span class="close-button" onclick="modalManager.close('importModal')">&times;</span>
         <h2>Import Transaction Data</h2>
         <div class="import-form">
             <div class="file-upload-container">
@@ -619,67 +1671,261 @@ body {
                         Load Sample Data
                     </button>
                 </div>
-
             </div>
         </div>
         <div class="modal-buttons">
-            <button class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
+            <button class="btn btn-secondary" onclick="modalManager.close('importModal')">Cancel</button>
         </div>
     </div>
-</div>  
+</div>
 
 
 
-        <!-- Dashboard Container -->
-<div  id="transactionDashboard" class="dashboard-modal">
+
+  <!-- Transactions Dashboard Modal -->
+<div id="transactionDashboard" class="dashboard-modal">
     <div class="modal-content">
-        <span class="close-button" onclick="closeTransactionDashboard()">&times;</span>  
-
-
-            <div class="dashboard-panel">
-                <div class="panel-title">
-                    Transaction Dashboard
+        <span class="close-button" onclick="modalManager.close('transactionDashboard')">&times;</span>
+        <div class="dashboard-panel">
+            <div class="panel-title">
+                Transaction Dashboard
+            </div>
+            <div class="panel-content">
+                <!-- Table Container -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Agreement ID</th>
+                                <th>Title</th>
+                                <th>Counterparty</th>
+                                <th>Category</th>
+                                <th>Role</th>
+                                <th>Effective Date</th>
+                                <th>End Date</th>
+                                <th>Region</th>
+                                <th>Status</th>
+                                <th>CLM Reference</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="agreementTableBody">
+                            <!-- Table content will be populated by backend -->
+                        </tbody>
+                    </table>
                 </div>
-                
-                <div class="panel-content">
-                    <!-- Table Container -->
-                    <div class="table-container">
-                        <table class="data-table">
+            </div>
+            <div class="dashboard-actions">
+                <button class="btn btn-primary import-button" onclick="modalManager.open('importModal')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Import Transaction Data
+                </button>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="modalManager.close('transactionDashboard')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Transaction Operations Command Modal -->
+<div id="operationsCommand" class="dashboard-modal">  <!-- Changed id to match modalManager and class for consistency -->
+    <div class="modal-content">
+        <span class="close-button" onclick="modalManager.close('operationsCommand')">&times;</span>
+        <div class="dashboard-panel">  <!-- Changed to dashboard-panel for consistency -->
+            <div class="panel-title">
+                Transaction Operations Command
+            </div>
+            <div class="panel-content">
+                Testing
+            </div>
+            <div class="dashboard-actions">  <!-- Changed to dashboard-actions for consistency -->
+                <button class="btn btn-primary import-button" onclick="modalManager.open('operationsCommandTestModal')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Operations Testing
+                </button>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="modalManager.close('operationsCommand')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Platform Tour Modal-->
+<div id="platformTour" class="dashboard-modal">  <!-- Changed id to match modalManager and class for consistency -->
+    <div class="modal-content">
+        <span class="close-button" onclick="modalManager.close('platformTour')">&times;</span>
+        <div class="dashboard-panel">  <!-- Changed to dashboard-panel for consistency -->
+            <div class="panel-title">
+                Platform Tour
+            </div>
+            <div class="tour-wrapper">
+                <header class="tour-header">
+                    <div class="tour-container">
+                        <h1>Transaction Services Platform</h1>
+                        <p>Powered by Tangible Intelligence</p>
+                        <p>From paper-based, siloed contracting processes to fluid Transactional Streams</p>
+                    </div>
+                </header>
+        
+                <section class="tour-principle-section">
+                    <h2 class="tour-principle-title">Platform Architecture</h2>
+                    <div class="tour-principle-container">
+                        <div class="tour-principle-box">
+                            <h1 style="font-style: italic;">The Critical Unlock resides at the Intersection of Computational Automation, Data Intelligence and Sector Expertise</h1>
+                        </div>
+                        
+                        <div class="tour-arrow-container">
+                            <div class="tour-arrow-right"></div>
+                            <span class="tour-arrow-text">Driving</span>
+                        </div>
+                        
+                        <div class="tour-principle-box">
+                            <h3>Transactional Excellence</h3>
+                            <ul class="tour-outcome-list">
+                                <li>Accelerated speed to close</li>
+                                <li>Quality of Deal Content</li>
+                                <li>Low Friction</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+        
+                <section class="tour-lifecycle-section">
+                    <div class="tour-container">
+                        <h2 style="text-align: center; color: var(--tour-corporate-blue);">The Transaction Lifecycle</h2>
+                        <div class="tour-lifecycle-grid">
+                            <div class="tour-lifecycle-card">
+                                <h3>1. Ideation</h3>
+                                <p>Transforming concepts into actionable opportunities.</p>
+                            </div>
+                            <div class="tour-lifecycle-card">
+                                <h3>2. Sourcing</h3>
+                                <p>Defining goals and structure for seamless execution.</p>
+                            </div>
+                            <div class="tour-lifecycle-card">
+                                <h3>3. Transacting</h3>
+                                <p>Driving value with informed and strategic counterparty transacting.</p>
+                            </div>
+                            <div class="tour-lifecycle-card">
+                                <h3>4. Packaging</h3>
+                                <p>Securing approvals for close.</p>
+                            </div>
+                            <div class="tour-lifecycle-card">
+                                <h3>5. Closing</h3>
+                                <p>Signing the final package.</p>
+                            </div>
+                            <div class="tour-lifecycle-card">
+                                <h3>6. Archiving</h3>
+                                <p>Extracting metadata and putaway.</p>
+                            </div>
+                            <div class="tour-lifecycle-card">
+                                <h3>7. Management</h3>
+                                <p>Tracking counterparty performance and optimizing for sustained success.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+        
+                <section class="tour-finder-section">
+                    <div class="tour-container">
+                        <h2 class="tour-finder-title">Where Do I Find It?</h2>
+                        <table class="tour-finder-table">
                             <thead>
                                 <tr>
-                                    <th>Agreement ID</th>
-                                    <th>Title</th>
-                                    <th>Counterparty</th>
-                                    <th>Category</th>
-                                    <th>Role</th>
-                                    <th>Effective Date</th>
-                                    <th>End Date</th>
-                                    <th>Region</th>
-                                    <th>Status</th>
-                                    <th>CLM Reference</th>
-                                    <th>Actions</th>
+                                    <th>Mission</th>
+                                    <th>Transaction Stage</th>
+                                    <th>Platform Functionality</th>
                                 </tr>
                             </thead>
-                            <tbody id="agreementTableBody">
-                                <!-- Table content will be populated by backend -->
+                            <tbody>
+                                <tr>
+                                    <td>Build a Transaction</td>
+                                    <td>Sourcing and Transacting</td>
+                                    <td>Engineering</td>
+                                </tr>
+                                <tr>
+                                    <td>Look up Transaction Status</td>
+                                    <td>Planning, Negotiation, Execution</td>
+                                    <td>Transaction Dashboard</td>
+                                </tr>
+                                <tr>
+                                    <td>Run my transactional system</td>
+                                    <td>System Management</td>
+                                    <td>Concierge</td>
+                                </tr>
+                                <tr>
+                                    <td>Load Legacy Data</td>
+                                    <td>Transacting</td>
+                                    <td>Configuration</td>
+                                </tr>
+                                <tr>
+                                    <td>Archive Transactions</td>
+                                    <td>Archiving</td>
+                                    <td>Concierge</td>
+                                </tr>
+                                <tr>
+                                    <td>Analyze a Portfolio of Transactions</td>
+                                    <td>Management</td>
+                                    <td>Transaction Analysis</td>
+                                </tr>
+                                <tr>
+                                    <td>Check system health</td>
+                                    <td>System Management</td>
+                                    <td>Transaction Ops Command</td>
+                                </tr>
+                                <tr>
+                                    <td>Tune my Platform</td>
+                                    <td>Platform Management</td>
+                                    <td>Settings</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="dashboard-actions">
-                    <button class="btn btn-primary import-button" onclick="openImportModal()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7 10 12 15 17 10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        Import Transaction Data
-                    </button>
-                </div>
+                </section>
+        
+                <footer class="tour-footer">
+                    <div class="tour-container">
+                        <p>© 2024 Transaction Services Platform. Built for serious business with an understated sense of humor.</p>
+                    </div>
+                </footer>
+            </div>
+            <div class="dashboard-actions">  <!-- Changed to dashboard-actions for consistency -->
+                <button class="btn btn-primary import-button" onclick="modalManager.open('platformTourTestModal')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Platform Tour Testing
+                </button>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="modalManager.close('platformTour')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div class="modal-buttons">
-                    <button class="btn btn-secondary" onclick="closeTransactionDashboard()">Close</button> <!-- Changed this line -->
-                </div>
+
+ <!-- Concierge Modal
+<div id="concierge" class="concierge-modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="modalManager.close('concierge')">&times;</span>
+        <div class="dashboard-panel">  
+            <div class="panel-title">               
+            -->
+
 
 
 
@@ -690,10 +1936,12 @@ body {
     <script>
      document.addEventListener('DOMContentLoaded', () => {
     setupSidebar();
+    setupFileUpload;
 });   
 
 // Sidebar Functions
 function setupSidebar() {
+    // Handle submenu toggles
     document.querySelectorAll('.menu-item.has-submenu').forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
@@ -710,46 +1958,27 @@ function setupSidebar() {
         });
     });
 
-    document.querySelectorAll('.submenu .menu-item').forEach(item => {
+    // Handle ALL menu items that don't have submenus
+    document.querySelectorAll('.menu-item:not(.has-submenu)').forEach(item => {
         item.addEventListener('click', function(e) {
             e.stopPropagation();
             
+            // Remove active state from all menu items
             document.querySelectorAll('.menu-item').forEach(mi => {
                 mi.classList.remove('active');
             });
             
+            // Add active state to clicked item
             this.classList.add('active');
             
+            // Get and handle the section
             const section = this.getAttribute('data-section');
             handleSectionDisplay(section);
         });
     });
 }
 
-function handleSectionDisplay(section) {
-    document.querySelectorAll('.main-content > div[id$="Container"]').forEach(div => {
-        div.style.display = 'none';
-    });
 
-    switch(section) {
-        case 'dashboard':
-            document.getElementById('transactionDashboard').style.display = 'block';
-            break;
-        case 'engineering':
-            document.getElementById('engineering-modal').classList.add('active');
-            break;
-    }
-}
-
-// Import Modal Functions
-function openImportModal() {
-    document.getElementById('import-modal').classList.add('active');
-}
-
-function closeImportModal() {
-    document.getElementById('import-modal').classList.remove('active');
-    document.getElementById('fileInput').value = '';
-}
 
 function handleFileSelect(event) {
     const file = event.target.files[0];
@@ -1006,30 +2235,7 @@ function viewDetails(agreementId) {
 
 
 
-// Add these functions to your JavaScript
-function closeTransactionDashboard() {
-    document.getElementById('transactionDashboard').classList.remove('active');
-}
 
-function openTransactionDashboard() {
-    document.getElementById('transactionDashboard').classList.add('active');
-}
-
-// Modify your handleSectionDisplay function
-function handleSectionDisplay(section) {
-    document.querySelectorAll('.main-content > div[id$="Container"]').forEach(div => {
-        div.style.display = 'none';
-    });
-
-    switch(section) {
-        case 'dashboard':
-            openTransactionDashboard(); // Changed this line
-            break;
-        case 'engineering':
-            document.getElementById('engineering-modal').classList.add('active');
-            break;
-    }
-}
 
 function setupFileUpload() {
     const dropArea = document.querySelector('.file-upload-area');
@@ -1070,8 +2276,7 @@ function setupFileUpload() {
     }
 }
 
-// Call this when the document loads
-document.addEventListener('DOMContentLoaded', setupFileUpload);
+
 
 function loadDemoData() {
     const demoData = [
@@ -1121,6 +2326,265 @@ function loadDemoData() {
     // Show success message
     showToast('Demo data loaded successfully');
 }
+
+// Modal Management System
+const modalManager = {
+    // Registry of all modals and their functions
+    modals: {
+        'transactionDashboard': {
+            open: function() {
+                document.getElementById('transactionDashboard').classList.add('active');
+            },
+            close: function() {
+                document.getElementById('transactionDashboard').classList.remove('active');
+            }
+        },
+        'engineeringConsole': {
+            open: function() {
+                document.getElementById('engineeringConsole').classList.add('active');
+            },
+            close: function() {
+                document.getElementById('engineeringConsole').classList.remove('active');
+            }
+        },
+        'analyticsConsole': {
+            open: function() {
+                document.getElementById('analyticsConsole').classList.add('active');
+            },
+            close: function() {
+                document.getElementById('analyticsConsole').classList.remove('active');
+            }
+        },
+        'familiesConsole': {
+            open: function() {
+                document.getElementById('familiesConsole').classList.add('active');
+            },
+            close: function() {
+                document.getElementById('familiesConsole').classList.remove('active');
+            }
+        },
+        'configurationConsole': {
+            open: function() {
+                document.getElementById('configurationConsole').classList.add('active');
+            },
+            close: function() {
+                document.getElementById('configurationConsole').classList.remove('active');
+            }
+        },
+        'operationsCommand': {
+            open: function() {
+                document.getElementById('operationsCommand').classList.add('active');
+            },
+            close: function() {
+                document.getElementById('operationsCommand').classList.remove('active');
+            }
+        },
+
+        'platformTour': {
+            open: function() {
+                document.getElementById('platformTour').classList.add('active');
+            },
+            close: function() {
+                document.getElementById('platfromTour').classList.remove('active');
+            }
+        },
+
+        'importModal': {
+            open: function() {
+                document.getElementById('importModal').classList.add('active');
+            },
+            close: function() {
+                document.getElementById('importModal').classList.remove('active');
+                document.getElementById('fileInput').value = ''; // Clear file input on close
+            }
+        }
+    },
+
+    // Close all modals
+    closeAll: function() {
+        Object.keys(this.modals).forEach(modalId => {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        });
+    },
+
+    // Open a specific modal
+    open: function(modalId) {
+        if (!this.modals[modalId]) {
+            console.error(`Modal ${modalId} not registered`);
+            return;
+        }
+        // Close all other modals first unless it's the import modal
+        if (modalId !== 'importModal') {
+            this.closeAll();
+        }
+        this.modals[modalId].open();
+    },
+
+    // Close a specific modal
+    close: function(modalId) {
+        if (!this.modals[modalId]) {
+            console.error(`Modal ${modalId} not registered`);
+            return;
+        }
+        this.modals[modalId].close();
+    },
+
+    // Register a new modal
+    register: function(modalId, openFn, closeFn) {
+        this.modals[modalId] = {
+            open: openFn,
+            close: closeFn
+        };
+    }
+};
+function handleSectionDisplay(section) {
+    console.log(`Handling section display for: ${section}`);
+
+    // Remove active state from all menu items
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('current-active');
+    });
+
+    // Add active state to current menu item
+    const currentMenuItem = document.querySelector(`.menu-item[data-section="${section}"]`);
+    if (currentMenuItem) {
+        currentMenuItem.classList.add('current-active');
+    }
+
+    try {
+        switch(section) {
+            case 'dashboard':
+                modalManager.open('transactionDashboard');
+                break;
+
+            case 'engineering':
+                modalManager.open('engineeringConsole');
+                break;
+
+            case 'analytics':
+                modalManager.open('analyticsConsole');
+                break;
+
+            case 'families':
+                modalManager.open('familiesConsole');
+                break;
+
+            case 'configuration':
+                modalManager.open('configurationConsole');
+                break;
+
+            case 'operationscommand':
+                modalManager.open('operationsCommand');
+                break;
+
+            case 'platformtour':
+                modalManager.open('platformTour');
+                break;
+
+            case 'home':
+                modalManager.closeAll();
+                // For non-modal content, we still need to handle display
+                document.querySelectorAll('.main-content > div[id$="Container"]').forEach(div => {
+                    div.style.display = 'none';
+                });
+                document.getElementById('homeContainer').style.display = 'block';
+                break;
+
+            case 'projects':
+                modalManager.closeAll();
+                document.querySelectorAll('.main-content > div[id$="Container"]').forEach(div => {
+                    div.style.display = 'none';
+                });
+                document.getElementById('projectsContainer').style.display = 'block';
+                break;
+
+            case 'settings':
+                modalManager.closeAll();
+                document.querySelectorAll('.main-content > div[id$="Container"]').forEach(div => {
+                    div.style.display = 'none';
+                });
+                document.getElementById('settingsContainer').style.display = 'block';
+                break;
+
+            default:
+                console.warn(`Section "${section}" not yet implemented`);
+                showToast(`${section} functionality coming soon!`, 'info');
+                break;
+        }
+    } catch (error) {
+        console.error(`Error handling section display for ${section}:`, error);
+        showToast('An error occurred while loading the section', 'error');
+    }
+
+    window.location.hash = section;
+}
+
+// Update your modal-related functions to use modalManager
+function openImportModal() {
+    modalManager.open('importModal');
+}
+
+function closeImportModal() {
+    modalManager.close('importModal');
+}
+
+// Example of how to register a new modal later
+function registerNewModal(modalId) {
+    modalManager.register(modalId,
+        function() { document.getElementById(modalId).classList.add('active'); },
+        function() { document.getElementById(modalId).classList.remove('active'); }
+    );
+}
+function launchProgram() {
+    const selectedProgram = document.querySelector('input[name="program"]:checked');
+    
+    if (!selectedProgram) {
+        showToast('Please select a program to launch', 'error');
+        return;
+    }
+
+    // Handle program launch
+    const programValue = selectedProgram.value;
+    console.log(`Launching program: ${programValue}`);
+    
+    // Close the engineering modal
+    modalManager.close('engineeringConsole');
+    
+    // Show success message
+    showToast(`Launching ${programValue} program...`);
+    
+    // Here you would add your program launch logic
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         </script> 
 

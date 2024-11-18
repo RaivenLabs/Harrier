@@ -1,133 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Services Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Previous CSS remains the same until body */
+        :root {
+            --corporate-blue: #0A2351;
+            --ivory: #FFFFF0;
+            --light-gray: #F5F5F5;
+            --dark-gray: #333333;
+            --teal: #006D77;
+            --light-blue: rgba(10, 35, 81, 0.1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--ivory);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
 
-        <!-- Agreement Modal -->
-        <div id="agreementModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeAgreementModal()">&times;</span>
-                <h2>Add New Agreement</h2>
-                <form id="agreementForm" onsubmit="handleFormSubmit(event)">
-                    <div class="form-grid">
-                        <!-- [Form fields remain unchanged] -->
-                    </div>
-                    <div class="button-container">
-                        <button type="submit" class="btn btn-primary">Save Agreement</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeAgreementModal()">Cancel</button>
-                    </div>
-                </form>
+        /* Rest of the previous styles remain the same until lifecycle section */
+
+        .lifecycle-section {
+            background: var(--ivory);
+            padding: 2rem 1rem;
+        }
+
+        .lifecycle-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1in); /* Set each column to 1 inch */
+            gap: 0.5rem;
+            text-align: center;
+            justify-content: center;
+            overflow-x: auto;
+        }
+
+        .lifecycle-card {
+            background: var(--ivory);
+            border: 1px solid var(--light-blue);
+            border-radius: 8px;
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+            width: 1in;
+            height: 1in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .lifecycle-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .lifecycle-card h3 {
+            color: var(--corporate-blue);
+            width: 50px;
+            font-size: 0.9rem;
+            margin: 0 0 0.3rem 0;
+        }
+
+        .lifecycle-card p {
+            margin: 0;
+            font-size: 0.7rem;
+            line-height: 1.2;
+        }
+
+        .principle-section {
+            margin-top: 2500px;
+            
+            background: var(--ivory);
+            padding: 4rem 1rem;
+        }
+
+        /* Media query update */
+        @media (max-width: 768px) {
+            .lifecycle-grid {
+                grid-template-columns: repeat(4, 1in);
+                justify-content: start;
+            }
+            
+            /* Previous mobile styles remain the same */
+        }
+
+        /* Rest of the styles remain the same */
+    </style>
+</head>
+<body>
+    <!-- Previous HTML remains the same until lifecycle section -->
+    <header class="header" style="margin-bottom: 151px;">
+        <div class="container">
+            <h1>Transaction Services Platform</h1>
+            <p>Powered by Tangible Intelligence</p>
+            <p>From paper-based,siloed contracting processes to fluid Transactional Streams</p>
+        </div>
+    </header>
+
+    <section class="principle-section">
+        <h2 class="principle-title">Platform Architecture</h2>
+        <div class="principle-container">
+            <div class="principle-box">
+                <h1 style="font-style: italic;">The Critical Unlock resides at the Intersection of Computational Automation, Data Intelligence and Sector Expertise</h1>
+            </div>
+            
+            <div class="arrow-container">
+                <div class="arrow-right"></div>
+                <span class="arrow-text">Driving</span>
+            </div>
+            
+            <div class="principle-box">
+                <h3>Transactional Excellence</h3>
+                <ul class="outcome-list">
+                    <li>Accelerated speed to close</li>
+                    <li>Quality of Deal Content</li>
+                    <li>Low Friction</li>
+                </ul>
             </div>
         </div>
+    </section>
 
-     <!-- Engineering Program Modal -->
-<div id="engineering-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeEngineeringModal()">&times;</span>
-        <h2>Select Transaction Program</h2>
-        <div class="radio-group">
-            <label class="radio-option">
-                <input type="radio" name="program" value="orders">
-                Orders
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="saas">
-                SaaS Agreements
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="service">
-                Service Agreements
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="hardware">
-                Hardware Purchase Agreements
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="software">
-                Software License Agreements
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="program" value="network">
-                Network Agreements
-            </label>
-        </div>
-        <div class="modal-buttons">
-            <button class="btn btn-secondary" onclick="closeEngineeringModal()">Cancel</button>
-            <button class="btn btn-primary" onclick="launchProgram()">Launch</button>
-        </div>
-    </div>
-</div>
-        <!-- Toast Notification -->
-        <div id="toast" class="toast"></div>
-    </div>
-
-
-    <!-- Import Data Modal -->
-<div id="import-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeImportModal()">&times;</span>
-        <h2>Import Transaction Data</h2>
-        <div class="import-form">
-            <div class="form-group">
-                <label for="fileInput">Select JSON File</label>
-                <input type="file" 
-                       id="fileInput" 
-                       accept=".json" 
-                       class="form-control"
-                       onchange="handleFileSelect(event)">
+    <section class="lifecycle-section">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--corporate-blue);">The Transaction Lifecycle</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Understanding the seven stages of a transaction and the tools that support each step.</p>
+            <div class="lifecycle-grid">
+                <div class="lifecycle-card">
+                    <h3>1. Ideation</h3>
+                    <p>Transform concepts into opportunities</p>
+                </div>
+                <div class="lifecycle-card">
+                    <h3>2. Planning</h3>
+                    <p>Define goals for execution</p>
+                </div>
+                <div class="lifecycle-card">
+                    <h3>3. Negotiation</h3>
+                    <p>Drive strategic decisions</p>
+                </div>
+                <div class="lifecycle-card">
+                    <h3>4. Execution</h3>
+                    <p>Streamline processes</p>
+                </div>
+                <div class="lifecycle-card">
+                    <h3>5. Closing</h3>
+                    <p>Finalize agreements</p>
+                </div>
+                <div class="lifecycle-card">
+                    <h3>6. Monitoring</h3>
+                    <p>Track performance</p>
+                </div>
+                <div class="lifecycle-card">
+                    <h3>7. Support</h3>
+                    <p>Maintain systems</p>
+                </div>
             </div>
         </div>
-        <div class="modal-buttons">
-            <button class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Transaction Services Platform. Built for serious business with an understated sense of humor.</p>
         </div>
-    </div>
-</div>
-
-
-
-        <!-- Dashboard Container -->
-<div  id="transactionDashboard" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeImportModal()">&times;</span>
-
-
-            <div class="dashboard-panel">
-                <div class="panel-title">
-                    Transaction Dashboard
-                </div>
-                
-                <div class="panel-content">
-                    <!-- Table Container -->
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Agreement ID</th>
-                                    <th>Title</th>
-                                    <th>Counterparty</th>
-                                    <th>Category</th>
-                                    <th>Role</th>
-                                    <th>Effective Date</th>
-                                    <th>End Date</th>
-                                    <th>Region</th>
-                                    <th>Status</th>
-                                    <th>CLM Reference</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="agreementTableBody">
-                                <!-- Table content will be populated by backend -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="dashboard-actions">
-                    <button class="btn btn-primary import-button" onclick="openImportModal()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7 10 12 15 17 10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        Import Transaction Data
-                    </button>
-                </div>
-
-                <div class="modal-buttons">
-                    <button class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
-                </div>
+    </footer>
+</body>
+</html>
