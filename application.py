@@ -134,6 +134,7 @@ def register_routes(app):
             'timestamp': datetime.utcnow().isoformat()
         })
 
+application = create_app()
 
 
 if __name__ == '__main__':
