@@ -1,8 +1,0 @@
-﻿# Normalize line endings for all text files
-* text=auto
-
-# Explicitly normalize line endings for specific file types
-*.py text
-*.css text
-*.js text
-*.html text
