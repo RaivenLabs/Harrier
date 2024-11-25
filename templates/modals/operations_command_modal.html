@@ -1,0 +1,112 @@
+<!-- Transaction Operations Command Modal -->
+<div id="operationsCommand" class="dashboard-modal">  <!-- Changed id to match modalManager and class for consistency -->
+    <div class="modal-content">
+        <span class="close-button" onclick="modalManager.close('operationsCommand')">&times;</span>
+        <div class="dashboard-panel">  <!-- Changed to dashboard-panel for consistency -->
+            <div class="panel-title">
+                Transaction Operations Command
+            </div>
+            <div class="panel-content">
+                            
+                    <div class="operations-command">
+                        <!-- Row 1 -->
+                        <div class="row">
+                            <!-- Active Projects -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 3H3v18h18V3zM9 9h6M9 15h6M9 12h6"/>
+                                    </svg>
+                                    <h3 class="card-title">Active Projects</h3>
+                                </div>
+                                <div class="card-content" id="projectsContainer">
+                                    <!-- Projects will be populated by JavaScript -->
+                                </div>
+                            </div>
+                
+                            <!-- Key Metrics -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                    </svg>
+                                    <h3 class="card-title">Key Metrics</h3>
+                                </div>
+                                <div class="card-content">
+                                    <div class="metrics-grid" id="metricsContainer">
+                                        <!-- Metrics will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Row 2 -->
+                        <div class="row">
+                            <!-- Flags -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                                    </svg>
+                                    <h3 class="card-title">Flags</h3>
+                                </div>
+                                <div class="card-content" id="flagsContainer">
+                                    <!-- Flags will be populated by JavaScript -->
+                                </div>
+                            </div>
+                
+                            <!-- Alerts -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                        <line x1="12" y1="9" x2="12" y2="13"/>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                    </svg>
+                                    <h3 class="card-title">Alerts</h3>
+                                </div>
+                                <div class="card-content">
+                                    <div class="alerts-container" id="alertsContainer">
+                                        <!-- Alerts will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- System Requests -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                    <h3 class="card-title">System Requests</h3>
+                                </div>
+                                <div class="card-content">
+                                    <div class="request-container">
+                                        <h4>Submit Feature Request</h4>
+                                        <p>Help us improve the platform by suggesting new features</p>
+                                        <button class="request-button" onclick="handleNewRequest()">New Request</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    
+               
+            </div>
+            <div class="dashboard-actions">  <!-- Changed to dashboard-actions for consistency -->
+                <button class="btn btn-primary import-button" onclick="modalManager.open('operationsCommandTestModal')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Operations Testing
+                </button>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="modalManager.close('operationsCommand')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
