@@ -17,7 +17,7 @@ except ImportError as e:
 
 def create_app():
     """Application factory function for Elastic Beanstalk Flask application"""
-    app = Flask(__name__)
+    app= Flask(__name__)
     
     # Configuration
     app.config.update(
