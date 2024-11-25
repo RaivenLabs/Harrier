@@ -134,8 +134,7 @@ def register_routes(app):
             'timestamp': datetime.utcnow().isoformat()
         })
 
-# Create the application instance
-application = create_app()
+
 
 if __name__ == '__main__':
     # Local development server configuration
