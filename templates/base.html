@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Transaction Services Platform{% endblock %}</title>
+     <!-- Favicon Configuration -->
+     <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}" type="image/x-icon">
+     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}" type="image/x-icon">
+     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+     <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='favicon/favicon-96x96.png') }}">
+     <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+
+
+
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Global Toast -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- SVG Icons Partial -->
+    {% include 'partials/svg_icons.html' %}
+    
+    <div class="layout">
+        <!-- Login Button Partial -->
+        {% include 'partials/login_button.html' %}
+        
+        <!-- Sidebar Partial -->
+        {% include 'partials/sidebar.html' %}
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    
+    <!-- Modal Includes -->
+    {% include 'modals/engineering_console_modal.html' %}
+    {% include 'modals/import_modal.html' %}
+    {% include 'modals/transaction_dashboard_modal.html' %}
+    {% include 'modals/operations_command_modal.html' %}
+    {% include 'modals/platform_tour_modal.html' %}
+    {% include 'modals/concierge_modal.html' %}
+    
+    <!-- Additional Modal Blocks -->
+    {% block modals %}{% endblock %}
+    
+    <!-- Common Scripts -->
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    
+    <!-- Additional Scripts Block -->
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

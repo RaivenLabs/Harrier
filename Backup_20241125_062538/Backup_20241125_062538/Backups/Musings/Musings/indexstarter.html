@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Services Platform</title>
+    <style>
+        :root {
+            --royal-blue: #0A2351;
+            --ivory: #FFFFF0;
+            --light-ivory: #FFFFFA;
+            --hover-blue: #153672;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-ivory);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1f2125;
+            color: var(--ivory);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+        }
+
+        .menu-item {
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: rgb(74, 73, 73);
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            flex-grow: 1;
+        }
+
+        .tile-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tile {
+            background-color: var(--ivory);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--royal-blue);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .tile-icon {
+            margin-bottom: 1.5rem;
+            color: var(--royal-blue);
+        }
+
+        .tile-title {
+            color: var(--royal-blue);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tile-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .icon {
+            color: var(--royal-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .tile:hover .icon {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Icon Definitions -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <!-- Transaction Engineering Icon -->
+        <symbol id="icon-engineering" viewBox="0 0 24 24">
+            <path d="M2 5C2 4.44772 2.44772 4 3 4H21C21.5523 4 22 4.44772 22 5V19C22 19.5523 21.5523 20 21 20H3C2.44772 20 2 19.5523 2 19V5Z" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"/>
+            <path d="M6 9L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 12L18 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 15L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </symbol>
+        
+        <!-- Transaction Analytics Icon -->
+        <symbol id="icon-analytics" viewBox="0 0 24 24">
+            <path d="M4 4V20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7 15L11 11L15 13L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="7" cy="15" r="1" fill="currentColor"/>
+            <circle cx="11" cy="11" r="1" fill="currentColor"/>
+            <circle cx="15" cy="13" r="1" fill="currentColor"/>
+            <circle cx="19" cy="8" r="1" fill="currentColor"/>
+        </symbol>
+
+        <!-- Assets/Archives Icon -->
+        <symbol id="icon-assets" viewBox="0 0 24 24">
+            <path d="M4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V6Z" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"/>
+            <path d="M8 4V22" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 16H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Insights Icon -->
+        <symbol id="icon-insights" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 3V4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 20V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M3 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M20 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18.364 5.636L17.657 6.343" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6.343 17.657L5.636 18.364" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18.364 18.364L17.657 17.657" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6.343 6.343L5.636 5.636" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </symbol>
+
+        <!-- Command Icon -->
+        <symbol id="icon-command" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 12L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+        </symbol>
+
+        <!-- Configuration Icon -->
+        <symbol id="icon-configuration" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"/>
+        </symbol>
+    </svg>
+
+    <!-- Main Layout -->
+    <div class="sidebar">
+        <div class="logo" style="color: rgb(21, 235, 235);">Transaction Services Center</div>
+        <nav>
+            <div class="menu-item">My Apps Configuration</div>
+            <div class="menu-item">My Projects</div>
+            <div class="menu-item">Transaction Grid</div>
+            <div class="menu-item">Team</div>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="tile-grid">
+            <!-- Tiles will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const tiles = [
+            {
+                title: 'Transaction Engineering',
+                icon: 'engineering',
+                description: 'Design and optimize transaction flows'
+            },
+            {
+                title: 'Transaction Analytics',
+                icon: 'analytics',
+                description: 'Deep insights into transaction patterns'
+            },
+            {
+                title: 'Assets',
+                icon: 'assets',
+                description: 'Access transaction archives'
+            },
+            {
+                title: 'Insights',
+                icon: 'insights',
+                description: 'Creative solutions and intelligence'
+            },
+            {
+                title: 'Command',
+                icon: 'command',
+                description: 'Transaction control center'
+            },
+            {
+                title: 'Configuration',
+                icon: 'configuration',
+                description: 'System-wide settings'
+            }
+        ];
+
+        const tileGrid = document.querySelector('.tile-grid');
+
+        tiles.forEach(tile => {
+            const tileElement = document.createElement('div');
+            tileElement.className = 'tile';
+            tileElement.innerHTML = `
+                <div class="tile-icon">
+                    <svg class="icon" width="48" height="48">
+                        <use href="#icon-${tile.icon}"></use>
+                    </svg>
+                </div>
+                <h2 class="tile-title">${tile.title}</h2>
+                <p class="tile-description">${tile.description}</p>
+            `;
+            tileGrid.appendChild(tileElement);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Harrier Account Recovery</title>
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@latest/dist/amazon-cognito-identity.min.js"></script>
+    <style>
+        :root {
+            --royal-blue: #0A2351;
+            --ivory: #FFFFF0;
+            --light-ivory: #FFFFFA;
+            --hover-blue: #153672;
+            --sidebar-dark: #1f2125;
+            --light-gray: #F5F5F5;
+            --dark-gray: #333333;
+            --teal: #006D77;
+            --light-blue: rgba(10, 35, 81, 0.1);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-ivory);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            background: var(--ivory);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(10, 35, 81, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--royal-blue);
+            border-radius: 12px 12px 0 0;
+        }
+
+        h2 {
+            color: var(--royal-blue);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .recovery-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .recovery-option {
+            padding: 1.5rem;
+            border: 2px solid var(--light-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .recovery-option:hover {
+            border-color: var(--royal-blue);
+            background-color: var(--light-blue);
+        }
+
+        .recovery-option h3 {
+            color: var(--royal-blue);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .recovery-option p {
+            color: var(--dark-gray);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--royal-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--light-blue);
+            border-radius: 6px;
+            background-color: var(--light-ivory);
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--royal-blue);
+            box-shadow: 0 0 0 3px var(--light-blue);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--royal-blue);
+            color: var(--ivory);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--hover-blue);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--royal-blue);
+            border: 2px solid var(--royal-blue);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-blue);
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .error {
+            background-color: #fff5f5;
+            color: #dc3545;
+            border: 1px solid #ffebeb;
+        }
+
+        .success {
+            background-color: #f0ffff;
+            color: var(--teal);
+            border: 1px solid #e6ffff;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: var(--royal-blue);
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .steps {
+            margin: 2rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .step {
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        .support-info {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: var(--light-blue);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Account Recovery</h2>
+
+        <!-- Initial Recovery Options -->
+        <div id="recoveryOptions" class="recovery-options">
+            <div class="recovery-option" onclick="showSection('mfaRecovery')">
+                <h3>Lost MFA Device</h3>
+                <p>Reset your multi-factor authentication if you've lost access to your device</p>
+            </div>
+            <div class="recovery-option" onclick="showSection('passwordReset')">
+                <h3>Reset Password</h3>
+                <p>Reset your password using your email verification</p>
+            </div>
+            <div class="recovery-option" onclick="showSection('accountLocked')">
+                <h3>Account Locked</h3>
+                <p>Unlock your account after too many failed login attempts</p>
+            </div>
+        </div>
+
+        <!-- MFA Recovery Section -->
+        <div id="mfaRecovery" style="display: none;">
+            <h2>MFA Device Recovery</h2>
+            <div class="steps">
+                <div class="step">1. Verify your identity using backup codes</div>
+                <div class="step">2. Set up a new MFA device</div>
+            </div>
+
+            <form id="mfaRecoveryForm">
+                <div class="form-group">
+                    <label for="backupCode">Backup Recovery Code</label>
+                    <input type="text" id="backupCode" required placeholder="Enter your backup code">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Verify Code</button>
+                <button type="button" class="btn btn-secondary" onclick="showSection('recoveryOptions')">Back</button>
+            </form>
+
+            <div class="support-info">
+                Lost your backup codes? Contact your organization administrator or 
+                <a href="mailto:support@harrier.ai">enterprise support</a>
+            </div>
+        </div>
+
+        <!-- Password Reset Section -->
+        <div id="passwordReset" style="display: none;">
+            <h2>Password Reset</h2>
+            
+            <div id="resetStep1">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <button class="btn btn-primary" onclick="requestPasswordReset()">Send Reset Code</button>
+                <button class="btn btn-secondary" onclick="showSection('recoveryOptions')">Back</button>
+            </div>
+
+            <div id="resetStep2" style="display: none;">
+                <div class="form-group">
+                    <label for="resetCode">Verification Code</label>
+                    <input type="text" id="resetCode" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+
+                <button class="btn btn-primary" onclick="confirmPasswordReset()">Reset Password</button>
+                <button class="btn btn-secondary" onclick="showResetStep(1)">Back</button>
+            </div>
+        </div>
+
+        <!-- Account Locked Section -->
+        <div id="accountLocked" style="display: none;">
+            <h2>Account Locked</h2>
+            <div class="steps">
+                <div class="step">1. Verify your identity</div>
+                <div class="step">2. Complete security check</div>
+                <div class="step">3. Reset your password</div>
+            </div>
+
+            <form id="unlockForm">
+                <div class="form-group">
+                    <label for="unlockEmail">Email Address</label>
+                    <input type="email" id="unlockEmail" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Begin Recovery</button>
+                <button type="button" class="btn btn-secondary" onclick="showSection('recoveryOptions')">Back</button>
+            </form>
+
+            <div class="support-info">
+                For security reasons, account unlocking may require administrator approval.
+                Contact your organization administrator for immediate assistance.
+            </div>
+        </div>
+
+        <div id="message" class="message" style="display: none;"></div>
+    </div>
+
+    <script>
+        const poolData = {
+            UserPoolId: 'us-west-2_84EKZhWZo',
+            ClientId: '45iqis6o56ph11jm9p4m5h5pbq'
+        };
+        const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+        let cognitoUser = null;
+
+        // Show specific section
+        function showSection(sectionId) {
+            document.getElementById('recoveryOptions').style.display = 'none';
+            document.getElementById('mfaRecovery').style.display = 'none';
+            document.getElementById('passwordReset').style.display = 'none';
+            document.getElementById('accountLocked').style.display = 'none';
+            
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Handle MFA Recovery
+        document.getElementById('mfaRecoveryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const backupCode = document.getElementById('backupCode').value;
+
+            // Verify backup code with Cognito
+            cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+                Username: sessionStorage.getItem('userEmail'),
+                Pool: userPool
+            });
+
+            cognitoUser.verifyMfaBackupCode(backupCode, {
+                onSuccess: function() {
+                    showMessage('Backup code verified. Redirecting to MFA setup...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/mfa-setup.html';
+                    }, 2000);
+                },
+                onFailure: function(err) {
+                    showMessage(err.message, 'error');
+                }
+            });
+        });
+
+        // Password Reset Flow
+        function requestPasswordReset() {
+            const email = document.getElementById('email').value;
+            
+            cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+                Username: email,
+                Pool: userPool
+            });
+
+            cognitoUser.forgotPassword({
+                onSuccess: function() {
+                    showMessage('Reset code sent to your email', 'success');
+                    showResetStep(2);
+                },
+                onFailure: function(err) {
+                    showMessage(err.message, 'error');
+                }
+            });
+        }
+
+        function confirmPasswordReset() {
+            const code = document.getElementById('resetCode').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                showMessage('Passwords do not match', 'error');
+                return;
+            }
+
+            cognitoUser.confirmPassword(code, newPassword, {
+                onSuccess: function() {
+                    showMessage('Password reset successful! Redirecting to login...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                },
+                onFailure: function(err) {
+                    showMessage(err.message, 'error');
+                }
+            });
+        }
+
+        function showResetStep(step) {
+            document.getElementById('resetStep1').style.display = step === 1 ? 'block' : 'none';
+            document.getElementById('resetStep2').style.display = step === 2 ? 'block' : 'none';
+        }
+
+        // Account Unlock Flow
+        document.getElementById('unlockForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('unlockEmail').value;
+
+            // Initialize recovery process
+            cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+                Username: email,
+                Pool: userPool
+            });
+
+            // Start account unlock process
+            cognitoUser.initiateAuth({
+                onSuccess: function() {
+                    showMessage('Account recovery initiated. Check your email for further instructions.', 'success');
+                },
+                onFailure: function(err) {
+                    if (err.code === 'AccountLockedException') {
+                        showMessage('Account is locked. Contact your administrator for assistance.', 'error');
+                    } else {
+                        showMessage(err.message, 'error');
+                    }
+                }
+            });
+        });
+
+        // Utility Functions
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

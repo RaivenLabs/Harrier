@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Harrier Login{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('auth.static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Harrier Login</h2>
+    
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="username">Email Address</label>
+            <input type="email" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Log In</button>
+    </form>
+
+    <div class="divider">Or</div>
+
+    <button id="msftLogin" class="microsoft-btn">
+        <svg class="microsoft-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23">
+            <path fill="#f25022" d="M1 1h10v10H1z"/>
+            <path fill="#00a4ef" d="M1 12h10v10H1z"/>
+            <path fill="#7fba00" d="M12 1h10v10H12z"/>
+            <path fill="#ffb900" d="M12 12h10v10H12z"/>
+        </svg>
+        Sign in with Microsoft
+    </button>
+
+    <div id="loginResult"></div>
+    <div id="journey-log"></div>
+</div>
+
+<!-- Store config in a data attribute -->
+<div id="cognito-config" data-config='{{ cognito_config|tojson|safe }}' style="display: none;"></div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Cognito SDK -->
+<script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@latest/dist/amazon-cognito-identity.min.js"></script>
+
+<!-- Configuration -->
+<script type="text/javascript">
+    // Load config from data attribute
+    window.cognitoConfig = JSON.parse(document.getElementById('cognito-config').dataset.config);
+</script>
+
+<!-- Application Logic -->
+<script src="{{ url_for('auth.static', filename='js/auth.js') }}"></script>
+{% endblock %}

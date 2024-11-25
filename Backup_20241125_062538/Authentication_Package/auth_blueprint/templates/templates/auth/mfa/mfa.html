@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Harrier MFA Verification</title>
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@latest/dist/amazon-cognito-identity.min.js"></script>
+    <style>
+        :root {
+            --royal-blue: #0A2351;
+            --ivory: #FFFFF0;
+            --light-ivory: #FFFFFA;
+            --hover-blue: #153672;
+            --sidebar-dark: #1f2125;
+            --light-gray: #F5F5F5;
+            --dark-gray: #333333;
+            --teal: #006D77;
+            --light-blue: rgba(10, 35, 81, 0.1);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-ivory);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            background: var(--ivory);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(10, 35, 81, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--royal-blue);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .email-display {
+            text-align: center;
+            color: var(--dark-gray);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .code-input {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .code-digit {
+            width: 40px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 2px solid var(--light-blue);
+            border-radius: 6px;
+            background-color: var(--light-ivory);
+        }
+
+        .code-digit:focus {
+            outline: none;
+            border-color: var(--royal-blue);
+            box-shadow: 0 0 0 3px var(--light-blue);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--royal-blue);
+            color: var(--ivory);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--hover-blue);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--royal-blue);
+            border: 2px solid var(--royal-blue);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-blue);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .help-text {
+            text-align: center;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .error {
+            background-color: #fff5f5;
+            color: #dc3545;
+            border: 1px solid #ffebeb;
+        }
+
+        .success {
+            background-color: #f0ffff;
+            color: var(--teal);
+            border: 1px solid #e6ffff;
+        }
+
+        .options-container {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .option-link {
+            color: var(--royal-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin: 0 1rem;
+        }
+
+        .option-link:hover {
+            color: var(--hover-blue);
+            text-decoration: underline;
+        }
+
+        .timer {
+            text-align: center;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2 style="color: var(--royal-blue); text-align: center; margin-bottom: 1.5rem;">
+            Verify Your Identity
+        </h2>
+
+        <div class="email-display">
+            Signed in as: <strong id="userEmail"></strong>
+        </div>
+
+        <!-- MFA Code Entry -->
+        <div id="mfaCodeSection">
+            <p class="help-text" id="mfaInstructions">
+                Enter the verification code from your authenticator app
+            </p>
+
+            <form id="mfaForm" onsubmit="return false;">
+                <div class="code-input">
+                    <input type="text" class="code-digit" maxlength="1" pattern="[0-9]" required>
+                    <input type="text" class="code-digit" maxlength="1" pattern="[0-9]" required>
+                    <input type="text" class="code-digit" maxlength="1" pattern="[0-9]" required>
+                    <input type="text" class="code-digit" maxlength="1" pattern="[0-9]" required>
+                    <input type="text" class="code-digit" maxlength="1" pattern="[0-9]" required>
+                    <input type="text" class="code-digit" maxlength="1" pattern="[0-9]" required>
+                </div>
+
+                <button id="verifyButton" class="btn btn-primary" onclick="verifyCode()">
+                    Verify
+                </button>
+
+                <div class="timer" id="codeTimer" style="display: none;">
+                    Code expires in: <span id="timeLeft">30</span>s
+                </div>
+            </form>
+        </div>
+
+        <!-- Backup Code Entry -->
+        <div id="backupCodeSection" style="display: none;">
+            <p class="help-text">
+                Enter one of your backup codes
+            </p>
+
+            <div class="form-group">
+                <input type="text" id="backupCode" class="form-control" 
+                       placeholder="Enter backup code" style="width: 100%; padding: 0.75rem;">
+            </div>
+
+            <button class="btn btn-primary" onclick="verifyBackupCode()">
+                Verify Backup Code
+            </button>
+
+            <button class="btn btn-secondary" onclick="showMFACodeSection()">
+                Back to MFA Code
+            </button>
+        </div>
+
+        <div id="message" class="message" style="display: none;"></div>
+
+        <div class="options-container">
+            <a href="#" class="option-link" onclick="useBackupCode()">Use Backup Code</a>
+            <a href="#" class="option-link" onclick="resendCode()">Resend Code</a>
+        </div>
+    </div>
+
+    <script>
+        // Cognito Configuration
+        const poolData = {
+            UserPoolId: 'us-west-2_84EKZhWZo',
+            ClientId: '45iqis6o56ph11jm9p4m5h5pbq'
+        };
+        const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+        let cognitoUser = null;
+        let mfaType = 'TOTP'; // or 'SMS'
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setupCodeInputs();
+            initializeUser();
+        });
+
+        // Initialize user from session storage
+        function initializeUser() {
+            const userEmail = sessionStorage.getItem('tempEmail');
+            document.getElementById('userEmail').textContent = userEmail;
+
+            cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+                Username: userEmail,
+                Pool: userPool
+            });
+
+            // Check MFA type
+            mfaType = sessionStorage.getItem('mfaType') || 'TOTP';
+            updateInstructions();
+        }
+
+        // Handle code input fields
+        function setupCodeInputs() {
+            const inputs = document.querySelectorAll('.code-digit');
+            
+            inputs.forEach((input, index) => {
+                input.addEventListener('keyup', (e) => {
+                    if (e.key >= 0 && e.key <= 9) {
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                    } else if (e.key === 'Backspace') {
+                        if (index > 0) {
+                            inputs[index - 1].focus();
+                        }
+                    }
+                });
+
+                input.addEventListener('keypress', (e) => {
+                    if (e.key < '0' || e.key > '9') {
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
+
+        // Update instructions based on MFA type
+        function updateInstructions() {
+            const instructions = document.getElementById('mfaInstructions');
+            if (mfaType === 'SMS') {
+                instructions.textContent = 'Enter the verification code sent to your phone';
+                document.getElementById('codeTimer').style.display = 'block';
+                startTimer();
+            } else {
+                instructions.textContent = 'Enter the verification code from your authenticator app';
+                document.getElementById('codeTimer').style.display = 'none';
+            }
+        }
+
+        // Verify MFA code
+        function verifyCode() {
+            const code = Array.from(document.querySelectorAll('.code-digit'))
+                .map(input => input.value)
+                .join('');
+
+            if (code.length !== 6) {
+                showMessage('Please enter a complete 6-digit code', 'error');
+                return;
+            }
+
+            cognitoUser.sendMFACode(code, {
+                onSuccess: function(result) {
+                    const tokens = {
+                        accessToken: result.getAccessToken().getJwtToken(),
+                        idToken: result.getIdToken().getJwtToken()
+                    };
+                    sessionStorage.setItem('tokens', JSON.stringify(tokens));
+                    showMessage('Verification successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1500);
+                },
+                onFailure: function(err) {
+                    showMessage(err.message, 'error');
+                    clearInputs();
+                }
+            });
+        }
+
+        // Handle backup code verification
+        function verifyBackupCode() {
+            const backupCode = document.getElementById('backupCode').value;
+            
+            cognitoUser.sendMFACode(backupCode, {
+                onSuccess: function(result) {
+                    const tokens = {
+                        accessToken: result.getAccessToken().getJwtToken(),
+                        idToken: result.getIdToken().getJwtToken()
+                    };
+                    sessionStorage.setItem('tokens', JSON.stringify(tokens));
+                    showMessage('Backup code accepted! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1500);
+                },
+                onFailure: function(err) {
+                    showMessage(err.message, 'error');
+                }
+            }, 'BACKUP_CODE');
+        }
+
+        // Toggle between MFA and backup code sections
+        function useBackupCode() {
+            document.getElementById('mfaCodeSection').style.display = 'none';
+            document.getElementById('backupCodeSection').style.display = 'block';
+        }
+
+        function showMFACodeSection() {
+            document.getElementById('mfaCodeSection').style.display = 'block';
+            document.getElementById('backupCodeSection').style.display = 'none';
+            clearInputs();
+        }
+
+        // Utility functions
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+
+        function clearInputs() {
+            document.querySelectorAll('.code-digit').forEach(input => {
+                input.value = '';
+            });
+            document.querySelector('.code-digit').focus();
+        }
+
+        function startTimer() {
+            let timeLeft = 30;
+            const timerSpan = document.getElementById('timeLeft');
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                timerSpan.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    showMessage('Code expired. Please request a new code.', 'error');
+                }
+            }, 1000);
+        }
+
+        function resendCode() {
+            if (mfaType === 'SMS') {
+                cognitoUser.resendConfirmationCode((err, result) => {
+                    if (err) {
+                        showMessage(err.message, 'error');
+                        return;
+                    }
+                    showMessage('New code sent!', 'success');
+                    startTimer();
+                });
+            } else {
+                showMessage('For authenticator app, use the current code shown in your app', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

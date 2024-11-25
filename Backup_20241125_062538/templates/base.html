@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Transaction Services Platform{% endblock %}</title>
+    
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Global Toast -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- SVG Definitions -->
+    {% block svg_definitions %}{% endblock %}
+    
+    <div class="layout">
+        <!-- Sidebar -->
+        {% block sidebar %}{% endblock %}
+        
+        <!-- Main Content -->
+        {% block content %}{% endblock %}
+    </div>
+    
+    <!-- Modal Includes -->
+    {% block modals %}{% endblock %}
+    
+    <!-- Common Scripts -->
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Services Platform</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div id="toast" class="toast"></div>
+
+    <!-- SVG Definitions -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="icon-home" viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 22V12h6v10" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        
+        <symbol id="icon-command" viewBox="0 0 24 24">
+            <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        
+        <symbol id="icon-operations" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        
+        <symbol id="icon-projects" viewBox="0 0 24 24">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+        
+        <symbol id="icon-config" viewBox="0 0 24 24">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+
+        <symbol id="icon-concierge" viewBox="0 0 24 24">
+            <!-- White Glove -->
+            <path d="M6 15c0-3 2.5-5.5 6-5.5s6 2.5 6 5.5V19c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-4z" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <!-- Wrist/Cuff Detail -->
+            <path d="M6 15h12" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <!-- Thumb -->
+            <path d="M8 14v-2c0-1.1.9-2 2-2h0" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <!-- Fingertips -->
+            <path d="M10 9.5v-2M12 9v-2.5M14 9.5v-2M16 10.5v-1.5" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <!-- Optional: Bell on top -->
+            <path d="M12 7.5V5M10.5 5h3" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <circle cx="12" cy="4" r="1" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    stroke-width="2"/>
+        </symbol>
+        
+        <symbol id="icon-settings" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>  
+    </svg>
+
+        <div class="layout">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar" id="sidebar">
+                <div class="logo-container">
+                    <div class="logo">Transaction Services Platform</div>
+                    <div class="logo-separator"></div>
+                </div>
+                <nav>
+                    
+                    <div class="menu-item" data-section="concierge">
+                        <svg><use href="#icon-concierge"/></svg>
+                        Concierge
+                    </div>
+
+                    
+                    
+                    <div class="menu-item" data-section="platformtour">
+                        <svg><use href="#icon-home"/></svg>
+                        Platform Guide
+                    </div>
+
+
+
+                    <div class="menu-item" data-section="operationscommand">
+                        <svg><use href="#icon-command"/></svg>
+                        Transaction Center
+                    </div>
+
+                    <div class="menu-item has-submenu" data-section="operations">
+                        <svg><use href="#icon-operations"/></svg>
+                        Transaction Operations
+                    </div>
+                    <div class="submenu">
+                        <div class="menu-item" data-section="dashboard">Transaction Dashboard</div>
+                        <div class="menu-item" data-section="engineering">Transaction Engineering</div>
+                        <div class="menu-item" data-section="analytics">Transaction Analytics</div>
+                        <div class="menu-item" data-section="families">Transaction Families</div>
+                        <div class="menu-item" data-section="configuration">Transaction Configuration</div>
+                        <div class="menu-item" data-section="configuration">Transaction Sandbox</div>
+                        <div class="menu-item" data-section="configuration">Engagement Optimization</div>
+                    </div>
+                    <div class="menu-item" data-section="projects">
+                        <svg><use href="#icon-projects"/></svg>
+                        My Projects
+                    </div>
+
+                    <div class="menu-item" data-section="settings">
+                        <svg><use href="#icon-settings"/></svg>
+                        Settings
+                    </div>
+
+
+                    <br><br><br>
+                    <div>
+                        <p>Powered by Tangible Intelligence</p>
+                    </div>
+                </nav>
+            </div>
+    
+            <!-- Main Content -->
+            <div class="main-content">
+                <h1>Testing</h1>
+            </div>
+        </div>
+
+
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                        <path d="M9 9h6v6H9z"/>
+                                    </svg>
+                                    <span>Hardware</span>
+                                </div>
+                            </label>
+        
+                            <label class="program-tile">
+                                <input type="radio" name="program" value="network">
+                                <div class="tile-content">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 2h6v3h-6zM5 5h14v4H5zM3 9h18v4H3zM5 13h14v4H5zM9 17h6v3h-6z"/>
+                                    </svg>
+                                    <span>Network</span>
+                                </div>
+                            </label>
+        
+                            <label class="program-tile">
+                                <input type="radio" name="program" value="evaluation">
+                                <div class="tile-content">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <path d="M9 10h6M9 14h6M9 18h6"/>
+                                    </svg>
+                                    <span>Evaluation</span>
+                                </div>
+                            </label>
+
+                            
+                       <!-- Add this where you want the engineering modal to appear -->
+{% include 'modals/engineering_console_modal.html' %}
+                            
+{% include 'modals/import_modal.html' %}
+
+{% include 'modals/transaction_dashboard_modal.html' %}
+
+
+
+{% include 'modals/operations_command_modal.html' %}
+
+
+{% include 'modals/platform_tour_modal.html' %}
+
+{% include 'modals/concierge_modal.html' %}
+    </body>
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+   
+
+</body>
+
+
+
+   
+ 
+
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Services Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Namespaced variables */
+        .tour-wrapper {
+            --tour-corporate-blue: #0A2351;
+            --tour-ivory: #FFFFF0;
+            --tour-light-gray: #F5F5F5;
+            --tour-dark-gray: #333333;
+            --tour-teal: #006D77;
+            --tour-light-blue: rgba(10, 35, 81, 0.1);
+        }
+        
+        .tour-wrapper {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--tour-ivory);
+            color: var(--tour-dark-gray);
+            line-height: 1.6;
+        }
+
+        .tour-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .tour-header {
+            background-color: var(--tour-corporate-blue);
+            color: var(--tour-ivory);
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        .tour-header h1 {
+            font-size: 2.8rem;
+            margin: 0 auto 1rem;
+            font-weight: 600;
+        }
+
+        .tour-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tour-principle-section {
+            background: white;
+            padding: 4rem 1rem;
+        }
+
+        .tour-principle-title {
+            text-align: center;
+            color: var(--tour-corporate-blue);
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tour-principle-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tour-principle-box {
+            background: var(--tour-light-gray);
+            padding: 2rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .tour-arrow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
+            height: 100px;
+        }
+
+        .tour-arrow-right {
+            position: relative;
+            width: 2in;
+            height: 15px;
+            background-color: var(--tour-teal);
+        }
+
+        .tour-arrow-right::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: -12.5px;
+            width: 0;
+            height: 0;
+            border-left: 25px solid var(--tour-teal);
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+        }
+
+        .tour-arrow-text {
+            font-size: 1rem;
+            color: var(--tour-teal);
+            font-weight: 500;
+            margin-top: 1.5rem;
+        }
+
+        .tour-outcome-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tour-outcome-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        .tour-outcome-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--tour-teal);
+            font-size: 1.2rem;
+        }
+
+        .tour-lifecycle-section {
+            background: var(--tour-ivory);
+            padding: 4rem 1rem;
+        }
+
+        .tour-lifecycle-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+            text-align: center;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .tour-lifecycle-card {
+            background: white;
+            border: 1px solid var(--tour-light-blue);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 150px;
+            transition: transform 0.3s ease;
+        }
+
+        .tour-lifecycle-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tour-lifecycle-card h3 {
+            color: var(--tour-corporate-blue);
+            font-size: 1.2rem;
+            margin-bottom: .5rem;
+        }
+
+        .tour-lifecycle-card p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .tour-finder-section {
+            background: var(--tour-light-gray);
+            padding: 4rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .tour-finder-title {
+            text-align: center;
+            color: var(--tour-corporate-blue);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .tour-finder-table {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tour-finder-table th,
+        .tour-finder-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--tour-light-blue);
+            line-height: 1.4;
+        }
+
+        .tour-finder-table th {
+            background: var(--tour-corporate-blue);
+            color: var(--tour-ivory);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .tour-finder-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tour-finder-table tr:hover {
+            background: var(--tour-light-blue);
+        }
+
+        .tour-footer {
+            background: var(--tour-corporate-blue);
+            color: var(--tour-ivory);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .tour-principle-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tour-arrow-container {
+                transform: rotate(90deg);
+                margin: 2rem 0;
+            }
+
+            .tour-arrow-text {
+                transform: rotate(-90deg);
+                margin-top: 1rem;
+            }
+
+            .tour-arrow-right {
+                width: 1.5in;
+            }
+
+            .tour-finder-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .tour-finder-table th,
+            .tour-finder-table td {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tour-wrapper">
+        <header class="tour-header">
+            <div class="tour-container">
+                <h1>Transaction Services Platform</h1>
+                <p>Powered by Tangible Intelligence</p>
+                <p>From paper-based, siloed contracting processes to fluid Transactional Streams</p>
+            </div>
+        </header>
+
+        <section class="tour-principle-section">
+            <h2 class="tour-principle-title">Platform Architecture</h2>
+            <div class="tour-principle-container">
+                <div class="tour-principle-box">
+                    <h1 style="font-style: italic;">The Critical Unlock resides at the Intersection of Computational Automation, Data Intelligence and Sector Expertise</h1>
+                </div>
+                
+                <div class="tour-arrow-container">
+                    <div class="tour-arrow-right"></div>
+                    <span class="tour-arrow-text">Driving</span>
+                </div>
+                
+                <div class="tour-principle-box">
+                    <h3>Transactional Excellence</h3>
+                    <ul class="tour-outcome-list">
+                        <li>Accelerated speed to close</li>
+                        <li>Quality of Deal Content</li>
+                        <li>Low Friction</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="tour-lifecycle-section">
+            <div class="tour-container">
+                <h2 style="text-align: center; color: var(--tour-corporate-blue);">The Transaction Lifecycle</h2>
+                <div class="tour-lifecycle-grid">
+                    <div class="tour-lifecycle-card">
+                        <h3>1. Ideation</h3>
+                        <p>Transforming concepts into actionable opportunities.</p>
+                    </div>
+                    <div class="tour-lifecycle-card">
+                        <h3>2. Sourcing</h3>
+                        <p>Defining goals and structure for seamless execution.</p>
+                    </div>
+                    <div class="tour-lifecycle-card">
+                        <h3>3. Transacting</h3>
+                        <p>Driving value with informed and strategic counterparty transacting.</p>
+                    </div>
+                    <div class="tour-lifecycle-card">
+                        <h3>4. Packaging</h3>
+                        <p>Securing approvals for close.</p>
+                    </div>
+                    <div class="tour-lifecycle-card">
+                        <h3>5. Closing</h3>
+                        <p>Signing the final package.</p>
+                    </div>
+                    <div class="tour-lifecycle-card">
+                        <h3>6. Archiving</h3>
+                        <p>Extracting metadata and putaway.</p>
+                    </div>
+                    <div class="tour-lifecycle-card">
+                        <h3>7. Management</h3>
+                        <p>Tracking counterparty performance and optimizing for sustained success.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tour-finder-section">
+            <div class="tour-container">
+                <h2 class="tour-finder-title">Where Do I Find It?</h2>
+                <table class="tour-finder-table">
+                    <thead>
+                        <tr>
+                            <th>Mission</th>
+                            <th>Transaction Stage</th>
+                            <th>Platform Functionality</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Build a Transaction</td>
+                            <td>Sourcing and Transacting</td>
+                            <td>Engineering</td>
+                        </tr>
+                        <tr>
+                            <td>Look up Transaction Status</td>
+                            <td>Planning, Negotiation, Execution</td>
+                            <td>Transaction Dashboard</td>
+                        </tr>
+                        <tr>
+                            <td>Run my transactional system</td>
+                            <td>System Management</td>
+                            <td>Concierge</td>
+                        </tr>
+                        <tr>
+                            <td>Load Legacy Data</td>
+                            <td>Transacting</td>
+                            <td>Configuration</td>
+                        </tr>
+                        <tr>
+                            <td>Archive Transactions</td>
+                            <td>Archiving</td>
+                            <td>Concierge</td>
+                        </tr>
+                        <tr>
+                            <td>Analyze a Portfolio of Transactions</td>
+                            <td>Management</td>
+                            <td>Transaction Analysis</td>
+                        </tr>
+                        <tr>
+                            <td>Check system health</td>
+                            <td>System Management</td>
+                            <td>Transaction Ops Command</td>
+                        </tr>
+                        <tr>
+                            <td>Tune my Platform</td>
+                            <td>Platform Management</td>
+                            <td>Settings</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="tour-footer">
+            <div class="tour-container">
+                <p>© 2024 Transaction Services Platform. Built for serious business with an understated sense of humor.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

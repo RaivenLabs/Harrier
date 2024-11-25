@@ -1,0 +1,49 @@
+ <!-- Transactions Dashboard Modal -->
+ <div id="transactionDashboard" class="dashboard-modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="modalManager.close('transactionDashboard')">&times;</span>
+        <div class="dashboard-panel">
+            <div class="panel-title">
+                Transaction Dashboard
+            </div>
+            <div class="panel-content">
+                <!-- Table Container -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Agreement ID</th>
+                                <th>Title</th>
+                                <th>Counterparty</th>
+                                <th>Category</th>
+                                <th>Role</th>
+                                <th>Effective Date</th>
+                                <th>End Date</th>
+                                <th>Region</th>
+                                <th>Status</th>
+                                <th>CLM Reference</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="agreementTableBody">
+                            <!-- Table content will be populated by backend -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="dashboard-actions">
+                <button class="btn btn-primary import-button" onclick="modalManager.open('importModal')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Import Transaction Data
+                </button>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="modalManager.close('transactionDashboard')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

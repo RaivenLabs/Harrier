@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pet Service Workflow System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>/* styles.css */
+    :root {
+        --royal-blue: #0A2351;
+        --ivory: #FFFFF0;
+        --light-ivory: #FFFFFA;
+        --hover-blue: #153672;
+        --sidebar-dark: #1f2125;
+        --light-gray: #F5F5F5;
+        --dark-gray: #333333;
+        --teal: #006D77;
+        --light-blue: rgba(10, 35, 81, 0.1);
+        --cyan: rgb(21, 235, 235);
+    }
+    
+    body {
+        background-color: var(--ivory);
+        color: var(--dark-gray);
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    
+    .container {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    
+    .workflow-creator {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .builder-section {
+        flex: 2;
+    }
+    
+    .saved-workflows {
+        flex: 1;
+    }
+    
+    .condition-block, .action-block {
+        border: 2px solid var(--royal-blue);
+        border-radius: 8px;
+        padding: 20px;
+        background: var(--light-blue);
+        margin-bottom: 20px;
+    }
+    
+    .condition-row, .action-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+        background: var(--light-ivory);
+        border-radius: 4px;
+    }
+    
+    .comparison-select {
+        width: 80px;
+    }
+    
+    select, input {
+        padding: 8px;
+        border: 1px solid var(--royal-blue);
+        border-radius: 4px;
+        background: var(--light-ivory);
+    }
+    
+    button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .add-button {
+        background: var(--royal-blue);
+        color: var(--ivory);
+    }
+    
+    .add-button:hover {
+        background: var(--hover-blue);
+    }
+    
+    .delete-button {
+        background: #ff5252;
+        color: var(--ivory);
+        padding: 4px 8px;
+    }
+    
+    .preview-area {
+        background: var(--light-gray);
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+    
+    .workflow-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .workflow-card {
+        background: var(--light-ivory);
+        border: 2px solid var(--royal-blue);
+        border-radius: 8px;
+        padding: 15px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .workflow-card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .workflow-card.active {
+        border: 3px solid var(--teal);
+        background: var(--light-blue);
+    }
+    
+    .workflow-icon {
+        font-size: 24px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    
+    .workflow-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: var(--royal-blue);
+        word-wrap: break-word;
+    }
+    
+    .workflow-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        gap: 5px;
+    }
+    
+    .mode-switch {
+        margin-bottom: 20px;
+        padding: 10px;
+        background: var(--light-blue);
+        border-radius: 8px;
+        display: flex;
+        gap: 10px;
+    }
+    
+    .mode-button {
+        background: var(--royal-blue);
+        color: var(--ivory);
+    }
+    
+    .mode-button.active {
+        background: var(--teal);
+    }
+    
+    .runtime-interface {
+        display: none;
+        background: var(--light-blue);
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .runtime-interface.active {
+        display: block;
+    }
+    
+    .runtime-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .runtime-result {
+        margin-top: 20px;
+        padding: 15px;
+        background: var(--ivory);
+        border-radius: 4px;
+        border: 2px solid var(--royal-blue);
+    }
+    
+    .input-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .input-group label {
+        min-width: 100px;
+        font-weight: bold;
+    }
+    
+    .development-interface {
+        display: none;
+    }
+    
+    .development-interface.active {
+        display: block;
+    }
+    
+    @media (max-width: 768px) {
+        .workflow-creator {
+            flex-direction: column;
+        }
+        
+        .workflow-grid {
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
+    }
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Mode Switch -->
+        <div class="mode-switch">
+            <button class="mode-button active" onclick="RuntimeMode.switchMode('development')">Development Mode</button>
+            <button class="mode-button" onclick="RuntimeMode.switchMode('runtime')">Runtime Mode</button>
+        </div>
+
+        <!-- Runtime Interface -->
+        <div id="runtimeInterface" class="runtime-interface">
+            <h2>Execute Workflow</h2>
+            <div class="runtime-form">
+                <div id="runtimeInputs">
+                    <!-- Dynamic inputs will be generated here -->
+                </div>
+                <button onclick="RuntimeMode.executeWorkflow()" class="add-button">Run Workflow</button>
+            </div>
+            <div id="runtimeResult" class="runtime-result">
+                Result will appear here
+            </div>
+        </div>
+
+        <!-- Development Interface -->
+        <div id="developmentInterface" class="development-interface active">
+            <div class="workflow-creator">
+                <div class="builder-section">
+                    <div id="currentWorkflow" class="current-workflow">
+                        <h3>Current Workflow: <span id="currentWorkflowName">None</span></h3>
+                    </div>
+
+                    <div class="condition-block">
+                        <h2>IF Conditions</h2>
+                        <div id="conditionsList"></div>
+                        <button id="addConditionBtn" class="add-button">+ Add Condition</button>
+                    </div>
+
+                    <div class="action-block">
+                        <h2>THEN Actions</h2>
+                        <div id="actionsList"></div>
+                        <button id="addActionBtn" class="add-button">+ Add Action</button>
+                    </div>
+                    
+                    <div class="preview-area">
+                        <h3>Preview:</h3>
+                        <div id="previewArea"></div>
+                        <div class="save-workflow">
+                            <input type="text" id="workflowName" placeholder="Enter workflow name">
+                            <button id="saveWorkflowBtn" class="add-button">Save Workflow</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="saved-workflows">
+                    <h2>My Workflows</h2>
+                    <div id="workflowGrid" class="workflow-grid">
+                        <!-- Saved workflows will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // workflow-core.js
+        const WorkflowCore = {
+            options: {
+                variables: ['Day', 'Pet', 'Time', 'Weather', 'Stock', 'Price'],
+                operators: ['equals', 'not equals', 'greater than', 'less than', 'contains'],
+                comparisons: ['AND', 'OR'],
+                actions: ['Walk dog', 'Feed pet', 'Clean cage', 'Give water', 'Play time', 'Grooming', 'Health check']
+            },
+        
+            state: {
+                conditions: [],
+                actions: [],
+                savedWorkflows: [],
+                currentWorkflowId: null
+            },
+        
+            initialize() {
+                this.loadFromStorage();
+                if (this.state.conditions.length === 0) this.addCondition();
+                if (this.state.actions.length === 0) this.addAction();
+            },
+        
+            loadFromStorage() {
+                const stored = localStorage.getItem('petServiceWorkflows');
+                if (stored) {
+                    this.state.savedWorkflows = JSON.parse(stored);
+                    this.renderSavedWorkflows();
+                }
+        
+                const currentId = localStorage.getItem('currentWorkflowId');
+                if (currentId) {
+                    const workflow = this.state.savedWorkflows.find(w => w.id.toString() === currentId);
+                    if (workflow) {
+                        this.loadWorkflow(workflow);
+                    }
+                }
+            },
+        
+            persistWorkflows() {
+                localStorage.setItem('petServiceWorkflows', JSON.stringify(this.state.savedWorkflows));
+                if (this.state.currentWorkflowId) {
+                    localStorage.setItem('currentWorkflowId', this.state.currentWorkflowId);
+                }
+            },
+        
+            getWorkflowIcon(workflow) {
+                const weatherCondition = workflow.conditions.find(c => 
+                    c.variable.toLowerCase() === 'weather' && c.value
+                );
+                
+                if (weatherCondition) {
+                    const weather = weatherCondition.value.toLowerCase();
+                    if (weather.includes('rain')) return '☔';
+                    if (weather.includes('sun')) return '☀️';
+                    if (weather.includes('cloud')) return '☁️';
+                }
+                
+                if (workflow.actions.some(a => a.action.includes('Walk'))) return '🦮';
+                if (workflow.actions.some(a => a.action.includes('Feed'))) return '🍽️';
+                if (workflow.actions.some(a => a.action.includes('Play'))) return '🎾';
+                return '🐾';
+            },
+        
+            addCondition() {
+                this.state.conditions.push({
+                    variable: this.options.variables[0],
+                    operator: this.options.operators[0],
+                    value: '',
+                    comparison: 'AND'
+                });
+                this.renderConditions();
+                this.updatePreview();
+            },
+        
+            addAction() {
+                this.state.actions.push({
+                    action: this.options.actions[0]
+                });
+                this.renderActions();
+                this.updatePreview();
+            },
+        
+            saveWorkflow() {
+                const nameInput = document.getElementById('workflowName');
+                const name = nameInput.value || 'Untitled Workflow';
+                
+                let workflow;
+                if (this.state.currentWorkflowId) {
+                    workflow = this.state.savedWorkflows.find(w => w.id.toString() === this.state.currentWorkflowId.toString());
+                    if (workflow) {
+                        workflow.name = name;
+                        workflow.conditions = [...this.state.conditions];
+                        workflow.actions = [...this.state.actions];
+                    }
+                } else {
+                    workflow = {
+                        name,
+                        conditions: [...this.state.conditions],
+                        actions: [...this.state.actions],
+                        id: Date.now()
+                    };
+                    this.state.savedWorkflows.push(workflow);
+                }
+                
+                this.persistWorkflows();
+                this.renderSavedWorkflows();
+                nameInput.value = '';
+                this.updateCurrentWorkflowDisplay(workflow);
+            },
+        
+            loadWorkflow(workflow) {
+                this.state.conditions = workflow.conditions.map(condition => ({...condition}));
+                this.state.actions = workflow.actions.map(action => ({...action}));
+                this.state.currentWorkflowId = workflow.id;
+                
+                this.renderConditions();
+                this.renderActions();
+                this.updatePreview();
+                this.updateCurrentWorkflowDisplay(workflow);
+                this.persistWorkflows();
+            },
+        
+            deleteWorkflow(id) {
+                if (confirm('Are you sure you want to delete this workflow?')) {
+                    this.state.savedWorkflows = this.state.savedWorkflows.filter(w => w.id !== id);
+                    if (this.state.currentWorkflowId === id) {
+                        this.state.currentWorkflowId = null;
+                        this.state.conditions = [];
+                        this.state.actions = [];
+                        this.renderConditions();
+                        this.renderActions();
+                        this.updatePreview();
+                        this.updateCurrentWorkflowDisplay(null);
+                    }
+                    this.persistWorkflows();
+                    this.renderSavedWorkflows();
+                }
+            },
+        
+            // These are the updated UI methods that connect to UIController
+            updateCurrentWorkflowDisplay(workflow) {
+                UIController.updateCurrentWorkflowDisplay(workflow);
+            },
+        
+            renderSavedWorkflows() {
+                UIController.renderSavedWorkflows();
+            },
+        
+            renderConditions() {
+                UIController.renderConditions();
+            },
+        
+            renderActions() {
+                UIController.renderActions();
+            },
+        
+            updatePreview() {
+                UIController.updatePreview();
+            }
+        };
+    
+// runtime-mode.js
+const RuntimeMode = {
+    initialize() {
+        this.switchMode('development');
+    },
+
+    switchMode(mode) {
+        this.currentMode = mode;
+        
+        // Update UI
+        document.querySelectorAll('.mode-button').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent.toLowerCase().includes(mode));
+        });
+        
+        document.getElementById('runtimeInterface').classList.toggle('active', mode === 'runtime');
+        document.getElementById('developmentInterface').classList.toggle('active', mode === 'development');
+        
+        if (mode === 'runtime') {
+            this.generateRuntimeInputs();
+        }
+    },
+
+    generateRuntimeInputs() {
+        const container = document.getElementById('runtimeInputs');
+        container.innerHTML = '';
+        
+        // Get unique variables from all saved workflows
+        const variables = new Set();
+        WorkflowCore.state.savedWorkflows.forEach(workflow => {
+            workflow.conditions.forEach(condition => {
+                variables.add(condition.variable);
+            });
+        });
+        
+        // Create input for each variable
+        variables.forEach(variable => {
+            const div = document.createElement('div');
+            div.className = 'input-group';
+            
+            const label = document.createElement('label');
+            label.textContent = variable + ':';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `runtime_${variable.toLowerCase()}`;
+            input.placeholder = `Enter ${variable.toLowerCase()}`;
+            
+            div.appendChild(label);
+            div.appendChild(input);
+            container.appendChild(div);
+        });
+    },
+
+    executeWorkflow() {
+        const inputs = {};
+        document.querySelectorAll('[id^="runtime_"]').forEach(input => {
+            const variable = input.id.replace('runtime_', '');
+            inputs[variable] = input.value;
+        });
+        
+        let results = [];
+        
+        // Check each workflow
+        WorkflowCore.state.savedWorkflows.forEach(workflow => {
+            if (this.evaluateWorkflowConditions(workflow, inputs)) {
+                workflow.actions.forEach(action => {
+                    results.push(action.action);
+                });
+            }
+        });
+        
+        // Display results
+        const resultDiv = document.getElementById('runtimeResult');
+        if (results.length > 0) {
+            resultDiv.innerHTML = `
+                <h3>Actions to Take:</h3>
+                <ul>
+                    ${results.map(result => `<li>${result}</li>`).join('')}
+                </ul>
+            `;
+        } else {
+            resultDiv.innerHTML = 'No matching workflows found for these inputs.';
+        }
+    },
+
+    evaluateWorkflowConditions(workflow, inputs) {
+        return workflow.conditions.every((condition, index) => {
+            const inputValue = inputs[condition.variable.toLowerCase()];
+            const conditionMet = this.evaluateCondition(condition, inputValue);
+            
+            if (index === 0) return conditionMet;
+            
+            const previousConditionMet = this.evaluateWorkflowConditions({
+                conditions: workflow.conditions.slice(0, index)
+            }, inputs);
+            
+            return condition.comparison === 'AND' ? 
+                (previousConditionMet && conditionMet) : 
+                (previousConditionMet || conditionMet);
+        });
+    },
+
+    evaluateCondition(condition, inputValue) {
+        if (!inputValue || !condition.value) return false;
+        
+        switch (condition.operator) {
+            case 'equals':
+                return inputValue.toLowerCase() === condition.value.toLowerCase();
+            case 'not equals':
+                return inputValue.toLowerCase() !== condition.value.toLowerCase();
+            case 'contains':
+                return inputValue.toLowerCase().includes(condition.value.toLowerCase());
+            case 'greater than':
+                return parseFloat(inputValue) > parseFloat(condition.value);
+            case 'less than':
+                return parseFloat(inputValue) < parseFloat(condition.value);
+            default:
+                return false;
+        }
+    }
+};
+
+// ui-controller.js
+const UIController = {
+    initialize() {
+        this.setupEventListeners();
+        this.renderInitialState();
+    },
+
+    setupEventListeners() {
+        document.getElementById('addConditionBtn').addEventListener('click', () => WorkflowCore.addCondition());
+        document.getElementById('addActionBtn').addEventListener('click', () => WorkflowCore.addAction());
+        document.getElementById('saveWorkflowBtn').addEventListener('click', () => WorkflowCore.saveWorkflow());
+    },
+
+    renderInitialState() {
+        this.renderConditions();
+        this.renderActions();
+        this.updatePreview();
+        this.renderSavedWorkflows();
+    },
+
+    createConditionRow(condition, index) {
+        const row = document.createElement('div');
+        row.className = 'condition-row';
+
+        if (index > 0) {
+            const comparisonSelect = document.createElement('select');
+            comparisonSelect.className = 'comparison-select';
+            WorkflowCore.options.comparisons.forEach(comp => {
+                const option = document.createElement('option');
+                option.value = comp;
+                option.textContent = comp;
+                comparisonSelect.appendChild(option);
+            });
+            comparisonSelect.value = condition.comparison || 'AND';
+            comparisonSelect.onchange = (e) => {
+                WorkflowCore.state.conditions[index].comparison = e.target.value;
+                this.updatePreview();
+            };
+            row.appendChild(comparisonSelect);
+        }
+
+        const variableSelect = document.createElement('select');
+        WorkflowCore.options.variables.forEach(variable => {
+            const option = document.createElement('option');
+            option.value = variable;
+            option.textContent = variable;
+            variableSelect.appendChild(option);
+        });
+        variableSelect.value = condition.variable || '';
+        variableSelect.onchange = (e) => {
+            WorkflowCore.state.conditions[index].variable = e.target.value;
+            this.updatePreview();
+        };
+
+        const operatorSelect = document.createElement('select');
+        WorkflowCore.options.operators.forEach(operator => {
+            const option = document.createElement('option');
+            option.value = operator;
+            option.textContent = operator;
+            operatorSelect.appendChild(option);
+        });
+        operatorSelect.value = condition.operator || '';
+        operatorSelect.onchange = (e) => {
+            WorkflowCore.state.conditions[index].operator = e.target.value;
+            this.updatePreview();
+        };
+
+        const valueInput = document.createElement('input');
+        valueInput.type = 'text';
+        valueInput.placeholder = 'Enter value';
+        valueInput.value = condition.value || '';
+        valueInput.onchange = (e) => {
+            WorkflowCore.state.conditions[index].value = e.target.value;
+            this.updatePreview();
+        };
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+        deleteButton.textContent = '×';
+        deleteButton.onclick = () => {
+            WorkflowCore.state.conditions.splice(index, 1);
+            this.renderConditions();
+            this.updatePreview();
+        };
+
+        row.appendChild(variableSelect);
+        row.appendChild(operatorSelect);
+        row.appendChild(valueInput);
+        row.appendChild(deleteButton);
+
+        return row;
+    },
+
+    createActionRow(action, index) {
+        const row = document.createElement('div');
+        row.className = 'action-row';
+
+        const actionSelect = document.createElement('select');
+        WorkflowCore.options.actions.forEach(actionOption => {
+            const option = document.createElement('option');
+            option.value = actionOption;
+            option.textContent = actionOption;
+            actionSelect.appendChild(option);
+        });
+        actionSelect.value = action.action || '';
+        actionSelect.onchange = (e) => {
+            WorkflowCore.state.actions[index].action = e.target.value;
+            this.updatePreview();
+        };
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+        deleteButton.textContent = '×';
+        deleteButton.onclick = () => {
+            WorkflowCore.state.actions.splice(index, 1);
+            this.renderActions();
+            this.updatePreview();
+        };
+
+        row.appendChild(actionSelect);
+        row.appendChild(deleteButton);
+
+        return row;
+    },
+
+    updateCurrentWorkflowDisplay(workflow) {
+        const nameSpan = document.getElementById('currentWorkflowName');
+        nameSpan.textContent = workflow ? workflow.name : 'None';
+    },
+
+    renderSavedWorkflows() {
+        const container = document.getElementById('workflowGrid');
+        container.innerHTML = '';
+        
+        if (WorkflowCore.state.savedWorkflows.length === 0) {
+            container.innerHTML = '<div class="no-workflows">No saved workflows yet</div>';
+            return;
+        }
+        
+        WorkflowCore.state.savedWorkflows.forEach(workflow => {
+            const card = document.createElement('div');
+            card.className = `workflow-card ${workflow.id === WorkflowCore.state.currentWorkflowId ? 'active' : ''}`;
+            
+            const icon = WorkflowCore.getWorkflowIcon(workflow);
+            
+            card.innerHTML = `
+                <div class="workflow-icon">${icon}</div>
+                <div class="workflow-title">${workflow.name}</div>
+                <div class="workflow-actions">
+                    <button onclick="WorkflowCore.loadWorkflow(${JSON.stringify(workflow)})">Load</button>
+                    <button class="delete" onclick="event.stopPropagation(); WorkflowCore.deleteWorkflow(${workflow.id})">Delete</button>
+                </div>
+            `;
+            
+            container.appendChild(card);
+        });
+    },
+
+    renderConditions() {
+        const container = document.getElementById('conditionsList');
+        container.innerHTML = '';
+        WorkflowCore.state.conditions.forEach((condition, index) => {
+            container.appendChild(this.createConditionRow(condition, index));
+        });
+    },
+
+    renderActions() {
+        const container = document.getElementById('actionsList');
+        container.innerHTML = '';
+        WorkflowCore.state.actions.forEach((action, index) => {
+            container.appendChild(this.createActionRow(action, index));
+        });
+    },
+
+    updatePreview() {
+        const preview = document.getElementById('previewArea');
+        if (WorkflowCore.state.conditions.length === 0) {
+            preview.textContent = 'No conditions or actions set';
+            return;
+        }
+
+        let previewText = WorkflowCore.state.conditions.map((condition, index) => {
+            const logic = `${condition.variable} ${condition.operator} ${condition.value}`;
+            return index === 0 ? 
+                `IF ${logic}` : 
+                `${condition.comparison} ${logic}`;
+        }).join('\n');
+
+        if (WorkflowCore.state.actions.length > 0) {
+            previewText += '\nTHEN\n' + WorkflowCore.state.actions.map(action => 
+                `- ${action.action}`
+            ).join('\n');
+        }
+
+        preview.innerHTML = `<pre>${previewText}</pre>`;
+    }
+};
+
+// Initialize everything when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    WorkflowCore.initialize();
+    RuntimeMode.initialize();
+    UIController.initialize();
+});
+</script>
+
+
+   
+</body>
+</html>
